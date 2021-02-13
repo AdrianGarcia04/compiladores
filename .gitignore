@@ -35,7 +35,7 @@
 *.i*86
 *.x86_64
 *.hex
-p7/src/bin/*
+/src/bin/*
 
 # Debug files
 *.dSYM/
@@ -53,5 +53,5 @@ Mkfile.old
 dkms.conf
 
 # Others
-p7/src/lex.yy.cpp
-p7/src/prueba.in
+/src/lex.yy.cpp
+/src/prueba.in
