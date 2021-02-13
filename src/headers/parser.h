@@ -78,12 +78,12 @@ void KP();
 void L();
 
 /**
- * Función para prueba y empate del No-terminal L
+ * Función para prueba y empate del No-terminal LP (L prima)
  */
 void LP();
 
 /**
- * Función para prueba y empate del No-terminal L
+ * Función para prueba y empate del No-terminal LPP (L bi-prima)
  */
 void LPP();
 
@@ -133,7 +133,7 @@ void RP();
 void S();
 
 /**
- * Función para prueba y empate del No-terminal S
+ * Función para prueba y empate del No-terminal SP (S prima)
  */
 void SP();
 
@@ -163,7 +163,7 @@ void UP();
 void V();
 
 /**
- * Función para prueba y empate del No-terminal V
+ * Función para prueba y empate del No-terminal VP (V prima)
  */
 void VP();
 
@@ -193,12 +193,12 @@ void Z();
 void ZP();
 
 /**
- * Función para prueba y empate del No-terminal ZP (Z prima)
+ * Función para prueba y empate del No-terminal AA
  */
 void AA();
 
 /**
- * Función para prueba y empate del No-terminal ZP (Z prima)
+ * Función para prueba y empate del No-terminal AAP (AA prima)
  */
 void AAP();
 
