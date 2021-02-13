@@ -7,19 +7,19 @@
 %option noyywrap
 %option yylineno
 
-num_ent [0-9]+
-num_float [0-9]*"."[0-9]+
-id [a-zA-Z][a-zA-Z0-9]*
-whitespace [ \t\n]
-boolean "true"|"false"
-cadena \".*\"
+num_ent      [0-9]+
+num_float    [0-9]*"."[0-9]+
+id           [a-zA-Z][a-zA-Z0-9]*
+whitespace   [ \t\n]
+boolean      "true"|"false"
+cadena       \".*\"
 
-%x IN_COMMENT
+%x COMMENT
 %%
 
 <INITIAL>{
-"--".* ;
-"<*" BEGIN(IN_COMMENT);
+"--".*       ;
+"<*"         BEGIN(COMMENT);
 
 ","          { ECHO; return crea_token(COMA); }
 ";"          { ECHO; return crea_token(PCOMA); }
@@ -78,7 +78,7 @@ cadena \".*\"
 
 }
 
-<IN_COMMENT>{
+<COMMENT>{
 "*>"         BEGIN(INITIAL);
 [^*\n]+      ;
 "*"          ;
