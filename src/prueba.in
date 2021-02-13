@@ -1,0 +1,6 @@
+func main() {
+  int var;
+  while (var <= 10) {
+    int x;
+  }
+}

@@ -1,6 +1,6 @@
 CXX=g++
 BINDIR=bin
-BIN=recursive_parser
+BIN=parser
 INC=headers
 
 SRC=$(wildcard *.c)
@@ -9,7 +9,7 @@ OBJ=$(SRC:%.c=%.c)
 all: flex fin
 
 fin: lex.yy.cpp tokens.cpp tipo.cpp simbolo.cpp parser.cpp main.cpp tablasimbolos.cpp
-	$(CXX) -I$(INC) -g -o $(BINDIR)/$(BIN) $^ 
+	$(CXX) -I$(INC) -g -o $(BINDIR)/$(BIN) $^
 
 %.o: %.c
 	$(CXX) $@ -c $<

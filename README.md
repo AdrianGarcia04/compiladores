@@ -1,13 +1,10 @@
-Instrucciones para compilación y ejecución
+# Compiladores 2021-1 | Proyecto Final
+
+## Instrucciones para compilación y ejecución
 1. Hacer `make` desde el directorio src/
-2. Ejecutar: ./parser prueba.in
+2. Ejecutar: ./bin/parser prueba.in
 
-Actividades
-1. Adecuar el analizador lexico lexer.lex de acuerdo a la gramatica del proyecto final.
-2. Completar lista.c
-3. Completar parser.c (con descenso recursivo) por el momento haciendo caso omiso de las reglas semanticas.
-
-Gramática:
+## Gramática:
 
 programa = A
 declaraciones = B
@@ -37,7 +34,7 @@ parametros = Y
 lista_param = Z
 localizacion = AA
 
-######### GRAMÁTICA TRADUCIDA #########
+## Gramática traducida
 
 A -> B G
 B -> C F;B | epsilon
