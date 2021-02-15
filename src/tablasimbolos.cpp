@@ -1,9 +1,11 @@
 #include "tablasimbolos.h"
+#include<iostream>
+using namespace std;
 
 void tabla_simbolos::imprimir(){
-    printf("ID\ttipo\tdir\tvar\n");
+    cout << "ID\ttipo\tdir\tvar\n";
     for (simbolo s : tabla) {
-        printf("%s\t%d\t%d\t%d\n", s.id.c_str(), s.tipo, s.dir,s.var);
+        cout << s.id.c_str() << "\t" << s.tipo << "\t" << s.dir << "\t" << s.var << "\n";
     }
 }
 
@@ -28,6 +30,7 @@ int tabla_simbolos::getTipo(string id) {
     }
     return -1;
 }
+
 /*
 void pila_simbolos::push( ) {
     pila.push(tabla_simbolos());
