@@ -4,6 +4,7 @@
 #include "tablasimbolos.h"
 #include "tablatipos.h"
 #include "expresion.h"
+#include <stdio.h>
 #include <iostream>
 #include <stdlib.h>
 #include <stack>
