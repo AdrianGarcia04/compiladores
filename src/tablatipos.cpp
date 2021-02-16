@@ -24,18 +24,28 @@ bool tabla_tipos::insertar(tipo t) {
     return false;
 }
 
-void pila_tipos::push() {
-    pila.push(tabla_tipos());
+void pila_tipos::push(tabla_tipos* tabla) {
+    pila.push(tabla);
 }
 
 void pila_tipos::pop() {
     pila.pop();
 }
 
-tabla_tipos pila_tipos::top() {
+tabla_tipos* pila_tipos::top() {
     return pila.top();
 }
 
+
 pila_tipos* crear_pila_tipos() {
   return (pila_tipos*)malloc(sizeof(pila_tipos));
+}
+
+tabla_tipos* crear_tabla_tipos() {
+    return (tabla_tipos*)malloc(sizeof(tabla_tipos));
+}
+
+void pila_tipos::insertar_tabla() {
+    tabla_tipos* tabla = crear_tabla_tipos();
+    pila.push(tabla);
 }

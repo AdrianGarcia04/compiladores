@@ -20,23 +20,6 @@ pila_simbolos* pilaSimbolos;
 pila_tipos* pilaTipos;
 stack<string> cadenas;
 
-void eat(int clase) {
-    if (equals(tokenActual, clase))
-    {
-        tokenActual = yylex();
-    }
-    else
-    {
-        error("Error de sintaxis");
-    }
-}
-
-void error(string msg) {
-  cout << msg << endl;
-  cout << ": línea " << yylineno << endl;
-  exit(1);
-}
-
 void parse() {
     pilaSimbolos = crear_pila_simbolos();
     pilaTipos = crear_pila_tipos();
@@ -55,7 +38,7 @@ void parse() {
 
 void A() {
   pilaSimbolos->insertar_tabla();
-  // PilaTT.push(nuevaTablaTT())
+  pilaTipos->insertar_tabla();
   dir = 0;
   B();
   G();
@@ -131,3 +114,16 @@ exp* D() {
 //     E();
 //   }
 // }
+
+void eat(int clase) {
+    if (equals(tokenActual, clase))
+        tokenActual = yylex();
+    else
+        error("Error de sintaxis");
+}
+
+void error(string msg) {
+  cout << msg << endl;
+  cout << ": línea " << yylineno << endl;
+  exit(1);
+}

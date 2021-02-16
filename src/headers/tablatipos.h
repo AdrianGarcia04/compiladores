@@ -16,11 +16,14 @@ public:
 } tabla_tipos;
 
 typedef struct pila_tipos{
-    stack<tabla_tipos> pila;
+    stack<tabla_tipos*> pila;
 public:
-    void push();
+    void push(tabla_tipos* tabla);
     void pop();
-    tabla_tipos top();
+    tabla_tipos* top();
+    void insertar_tabla();
 } pila_tipos;
+
+tabla_tipos* crear_tabla_tipos();
 
 pila_tipos* crear_pila_tipos();

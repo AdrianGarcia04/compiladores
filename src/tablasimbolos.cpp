@@ -55,5 +55,5 @@ tabla_simbolos* crear_tabla_simbolos() {
 
 void pila_simbolos::insertar_tabla() {
     tabla_simbolos* tabla = crear_tabla_simbolos();
-    pila.push(tabla)
+    pila.push(tabla);
 }
