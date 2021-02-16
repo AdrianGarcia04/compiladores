@@ -7,14 +7,16 @@ using namespace std;
  * Estructura para modelar símbolos de la TS
  */
 typedef struct simbolo {
+  string id;
+  int dir;
   int tipo;
-  int dir; //dirección
-  string id; //identificador
-  int var; 
-  vector<int> args; //argumentos
+  int var;
+  vector<int> args;
 } simbolo ;
 
 /**
  * Inicialización de símbolos
  */
-simbolo *crea_simbolo(string id, int dir, int type, int var, vector<int> args);
+simbolo *crea_simbolo(string id, int dir, int tipo, int var, vector<int> args);
+
+simbolo *crea_simbolo_v();
