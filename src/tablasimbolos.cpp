@@ -1,5 +1,6 @@
 #include "tablasimbolos.h"
-#include<iostream>
+#include <iostream>
+#include <stack>
 using namespace std;
 
 void tabla_simbolos::imprimir(){
@@ -31,7 +32,6 @@ int tabla_simbolos::getTipo(string id) {
     return -1;
 }
 
-/*
 void pila_simbolos::push( ) {
     pila.push(tabla_simbolos());
 }
@@ -43,6 +43,3 @@ void pila_simbolos::pop() {
 tabla_simbolos pila_simbolos::top() {
     return pila.top();
 }
-
-
-*/

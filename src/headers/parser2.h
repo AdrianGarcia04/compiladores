@@ -16,192 +16,192 @@ void B();
 /**
  * Función para prueba y empate del No-terminal C
  */
-simbolo C();
+exp* C();
 
 /**
  * Función para prueba y empate del No-terminal D
  */
-simbolo D();
+exp* D();
 
 /**
  * Función para prueba y empate del No-terminal E
  */
-simbolo E();
+exp* E();
 
 /**
  * Función para prueba y empate del No-terminal F
  */
-simbolo F();
+exp* F();
 
 /**
  * Función para prueba y empate del No-terminal FP (F prima)
  */
-simbolo FP();
+exp* FP();
 
 /**
  * Función para prueba y empate del No-terminal G
  */
-simbolo G();
+exp* G();
 
 /**
  * Función para prueba y empate del No-terminal H
  */
-simbolo H();
+exp* H();
 
 /**
  * Función para prueba y empate del No-terminal I
  */
-simbolo I();
+exp* I();
 
 /**
  * Función para prueba y empate del No-terminal IP (I prima)
  */
-simbolo IP();
+exp* IP();
 
 /**
  * Función para prueba y empate del No-terminal J
  */
-simbolo J();
+exp* J();
 
 /**
  * Función para prueba y empate del No-terminal K
  */
-simbolo K();
+exp* K();
 
 /**
  * Función para prueba y empate del No-terminal KP (K prima)
  */
-simbolo KP();
+exp* KP();
 
 /**
  * Función para prueba y empate del No-terminal L
  */
-simbolo L();
+exp* L();
 
 /**
  * Función para prueba y empate del No-terminal LP (L prima)
  */
-simbolo LP();
+exp* LP();
 
 /**
  * Función para prueba y empate del No-terminal LPP (L bi-prima)
  */
-simbolo LPP();
+exp* LPP();
 
 /**
  * Función para prueba y empate del No-terminal M
  */
-simbolo M();
+exp* M();
 
 /**
  * Función para prueba y empate del No-terminal N
  */
-simbolo N();
+exp* N();
 
 /**
  * Función para prueba y empate del No-terminal O
  */
-simbolo O();
+exp* O();
 
 /**
  * Función para prueba y empate del No-terminal P
  */
-simbolo P();
+exp* P();
 
 /**
  * Función para prueba y empate del No-terminal Q
  */
-simbolo Q();
+exp* Q();
 
 /**
  * Función para prueba y empate del No-terminal QP (Q prima)
  */
-simbolo QP();
+exp* QP();
 
 /**
  * Función para prueba y empate del No-terminal R
  */
-simbolo R();
+exp* R();
 
 /**
  * Función para prueba y empate del No-terminal RP (R prima)
  */
-simbolo RP();
+exp* RP();
 
 /**
  * Función para prueba y empate del No-terminal S
  */
-simbolo S();
+exp* S();
 
 /**
  * Función para prueba y empate del No-terminal SP (S prima)
  */
-simbolo SP();
+exp* SP();
 
 /**
  * Función para prueba y empate del No-terminal T
  */
-simbolo T();
+exp* T();
 
 /**
  * Función para prueba y empate del No-terminal TP (T prima)
  */
-simbolo TP();
+exp* TP();
 
 /**
  * Función para prueba y empate del No-terminal U
  */
-simbolo U();
+exp* U();
 
 /**
  * Función para prueba y empate del No-terminal UP (U prima)
  */
-simbolo UP();
+exp* UP();
 
 /**
  * Función para prueba y empate del No-terminal V
  */
-simbolo V();
+exp* V();
 
 /**
  * Función para prueba y empate del No-terminal VP (V prima)
  */
-simbolo VP();
+exp* VP();
 
 /**
  * Función para prueba y empate del No-terminal W
  */
-simbolo W();
+exp* W();
 
 /**
  * Función para prueba y empate del No-terminal X
  */
-simbolo X();
+exp* X();
 
 /**
  * Función para prueba y empate del No-terminal Y
  */
-simbolo Y();
+exp* Y();
 
 /**
  * Función para prueba y empate del No-terminal Z
  */
-simbolo Z();
+exp* Z();
 
 /**
  * Función para prueba y empate del No-terminal ZP (Z prima)
  */
-simbolo ZP();
+exp* ZP();
 
 /**
  * Función para prueba y empate del No-terminal AA
  */
-simbolo AA();
+exp* AA();
 
 /**
  * Función para prueba y empate del No-terminal AAP (AA prima)
  */
-simbolo AAP();
+exp* AAP();
 
 /**
  * Función para consumo de componente léxico actual al hacer empate

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "simbolo.h"
 
 simbolo *crea_simbolo(string id, int dir, int tipo, int var, vector<int> args) {
