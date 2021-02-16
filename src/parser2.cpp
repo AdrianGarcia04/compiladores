@@ -65,18 +65,18 @@ void B(){
   }
 }
 
-exp* C(){
-  exp* c = crea_exp();
-  // exp* d = D();
-  // exp* e = crea_exp();
-  // e->base = d->base;
-  // E(e);
-  // c->tipo = e->tipo;
+exp C(){
+  exp c = exp();
+  exp d = D();
+  exp e = exp();
+  e.base = d.tipo;
+  E(e);
+  c.tipo = e.tipo;
   return c;
 }
 
-exp* D() {
-  exp* d = crea_exp();
+exp D() {
+    exp d = exp();
   if (equals(tokenActual, INT)) {
     eat(INT);
     d->tipo = 0;
@@ -104,16 +104,20 @@ exp* D() {
   return d;
 }
 
-// exp* E() {
-//   if (equals(tokenActual, CIZQ)) {
-//     string valor;
-//     eat(CIZQ);
-//     valor = tokenActual->valor;
-//     eat(NUM);
-//     eat(CDER);
-//     E();
-//   }
-// }
+exp E(exp ep) {
+    exp e = exp();
+   if (equals(tokenActual, CIZQ)) {
+     string valor;
+     eat(CIZQ);
+     valor = tokenActual->valor;
+     eat(NUM);
+     eat(CDER);
+     E();
+   } else{
+       e.tipo = ep.base;
+   }
+
+}
 
 void eat(int clase) {
     if (equals(tokenActual, clase))

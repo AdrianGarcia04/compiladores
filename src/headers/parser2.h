@@ -17,12 +17,12 @@ void B();
 /**
  * Función para prueba y empate del No-terminal C
  */
-exp* C();
+exp C();
 
 /**
  * Función para prueba y empate del No-terminal D
  */
-exp* D();
+exp D();
 
 /**
  * Función para prueba y empate del No-terminal E
