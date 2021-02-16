@@ -50,7 +50,7 @@
 + J -> **{** B K **}**
 + K -> L K'
 + K' -> L K' | epsilon
-+ L -> P **=** Q; |  **if(** Q **)** L | **if(** Q **)** L L' | **while(** Q **)** L | **do** L **while(** Q **)**
++ L -> P **=** Q; | **if(** Q **)** L L' | **while(** Q **)** L | **do** L **while(** Q **)**
    | **break;**| J | **return** L'' | **switch(** Q **){** M **}**| **print** U **;** | **scan** P
 + L' -> **else** L | epsilon
 + L'' -> U **;** | **;**
