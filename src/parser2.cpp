@@ -8,6 +8,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stack>
+#include <string>
 
 extern token *yylex();
 extern int yylineno;
@@ -17,6 +18,7 @@ token *tokenActual;
 int dir;
 pila_simbolos* pilaSimbolos;
 pila_tipos* pilaTipos;
+stack<string> cadenas;
 
 void eat(int clase) {
     if (equals(tokenActual, clase))
@@ -52,7 +54,7 @@ void parse() {
 }
 
 void A() {
-  // PilaTS.push(nuevaTablaTS())
+  pilaSimbolos->insertar_tabla();
   // PilaTT.push(nuevaTablaTT())
   dir = 0;
   B();

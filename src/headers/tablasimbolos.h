@@ -16,12 +16,16 @@ public:
     void imprimir();
 } tabla_simbolos;
 
+tabla_simbolos* crear_tabla_simbolos();
+
 typedef struct pila_simbolos{
-    stack<tabla_simbolos> pila;
+    stack<tabla_simbolos*> pila;
 public:
-    void push() ;
+    void push(tabla_simbolos* tabla) ;
     void pop();
-    tabla_simbolos top();
+    tabla_simbolos* top();
+    void insertar_tabla();
 } pila_simbolos;
 
 pila_simbolos* crear_pila_simbolos();
+
