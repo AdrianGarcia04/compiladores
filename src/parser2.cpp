@@ -81,8 +81,8 @@ void B(){
 
 exp* C(){
   exp* c = crea_exp();
-  // simbolo* d = D();
-  // simbolo* e = crea_simbolo_v();
+  // exp* d = D();
+  // exp* e = crea_exp();
   // e->base = d->base;
   // E(e);
   // c->tipo = e->tipo;
@@ -118,7 +118,7 @@ exp* D() {
   return d;
 }
 
-// simbolo* E() {
+// exp* E() {
 //   if (equals(tokenActual, CIZQ)) {
 //     string valor;
 //     eat(CIZQ);
