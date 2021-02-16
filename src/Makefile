@@ -8,7 +8,7 @@ OBJ=$(SRC:%.c=%.c)
 
 all: flex fin
 
-fin: lex.yy.cpp tokens.cpp tipo.cpp simbolo.cpp $(BIN).cpp main.cpp tablasimbolos.cpp
+fin: lex.yy.cpp tokens.cpp tipo.cpp simbolo.cpp $(BIN).cpp main.cpp tablasimbolos.cpp tablatipos.cpp
 	$(CXX) -I$(INC) -g -o $(BINDIR)/$(BIN) $^
 
 %.o: %.c

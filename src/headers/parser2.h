@@ -2,6 +2,7 @@
 #include "tokens.h"
 #include "tablasimbolos.h"
 #include "simbolo.h"
+#include "expresion.h"
 
 /**
  * Función para prueba y empate del No-terminal A
@@ -31,7 +32,7 @@ exp* E();
 /**
  * Función para prueba y empate del No-terminal F
  */
-exp* F();
+exp* F(exp* f);
 
 /**
  * Función para prueba y empate del No-terminal FP (F prima)

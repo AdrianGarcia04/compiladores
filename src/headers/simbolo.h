@@ -12,11 +12,6 @@ typedef struct simbolo {
   int tipo;
   int var;
   vector<int> args;
-} simbolo ;
+} simbolo;
 
-/**
- * Inicialización de símbolos
- */
-simbolo *crea_simbolo(string id, int dir, int tipo, int var, vector<int> args);
-
-simbolo *crea_simbolo_v();
+simbolo *crea_simbolo();

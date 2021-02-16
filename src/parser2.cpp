@@ -2,6 +2,7 @@
 #include "parser2.h"
 #include "simbolo.h"
 #include "tablasimbolos.h"
+#include "tablatipos.h"
 #include "expresion.h"
 #include <iostream>
 #include <stdlib.h>
@@ -13,8 +14,8 @@ using namespace std;
 
 token *tokenActual;
 int dir;
-stack<tabla_simbolos> pilaTS;
-tabla_simbolos tablaTipos;
+pila_simbolos* pilaSimbolos;
+pila_tipos* pilaTipos;
 
 void eat(int clase) {
     if (equals(tokenActual, clase))
@@ -27,12 +28,21 @@ void eat(int clase) {
     }
 }
 
+void error(string msg) {
+  cout << msg << endl;
+  cout << ": línea " << yylineno << endl;
+  exit(1);
+}
+
 void parse() {
-    //inicializar TS y TT
+    pilaSimbolos = crear_pila_simbolos();
+    pilaTipos = crear_pila_tipos();
     /*
     0 - int
     1 - float
     2 - char
+    3 - double
+    4 - void
     */
 
 

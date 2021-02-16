@@ -10,7 +10,7 @@ void tabla_simbolos::imprimir(){
     }
 }
 
-bool tabla_simbolos::buscar(string id) {    
+bool tabla_simbolos::buscar(string id) {
     for (simbolo s : tabla) {
         if (s.id == id) return true;
     }
@@ -42,4 +42,8 @@ void pila_simbolos::pop() {
 
 tabla_simbolos pila_simbolos::top() {
     return pila.top();
+}
+
+pila_simbolos* crear_pila_simbolos() {
+  return (pila_simbolos*)malloc(sizeof(pila_simbolos));
 }
