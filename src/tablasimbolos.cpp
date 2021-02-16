@@ -1,5 +1,6 @@
 #include "tablasimbolos.h"
 #include <iostream>
+#include <stdlib.h>
 #include <stack>
 using namespace std;
 
