@@ -605,7 +605,169 @@ boolExpH RP(boolExpH rparam){
 
 }
 
-void U() {
+boolExp S(boolExp sparam) {
+  boolExp t = boolExp();
+  t.vddr = sparam.vddr;
+  t.fls = sparam.fls;
+  t = T(t);
+  boolExp sp = boolExp();
+  sp.vddr = sparam.vddr;
+  sp.fls = sparam.fls;
+  sp.tipo = t.tipo;
+  sp.dir = t.dir;
+  sp = SP(sp);
+  sparam.tipo = sp.tipo;
+  sparam.dir = sp.dir;
+  return sparam;
+}
+
+exp SP(boolExp spparam) {
+  exp sp = exp();
+  if (equals(tokenActual, EQ)) {
+    eat(EQ);
+    boolExp t = boolExp();
+    t.vddr = spparam.vddr;
+    t.fls = spparam.fls;
+    t = T(t);
+    boolExp sp1 = boolExp();
+    sp1.vddr = spparam.vddr;
+    sp1.fls = spparam.fls;
+    sp1 = SP(sp1);
+    if (sem.equivalentes(spparam.tipo, t.tipo)) {
+      sp1.dir = sem.nuevaTemporal();
+      int tipoTmp = sem.maximo(spparam.tipo, t.tipo);
+      string d1 = sem.ampliar(spparam.dir, spparam.tipo, tipoTmp);
+      string d2 = sem.ampliar(t.dir, t.tipo, tipoTmp);
+      genCod(cuadrupla(sp1.dir, "=", d1 + "==", d2));
+      genCod(cuadrupla("if", sp1.dir, "goto", t.vddr));
+      genCod(cuadrupla("goto", t.fls, "", ""));
+      sp.tipo = sp1.tipo;
+      spparam.tipo = t.tipo;
+      spparam.dir = t.dir;
+    }
+  }
+  else if (equals(tokenActual, NEQ)) {
+    eat(NEQ);
+    boolExp t = boolExp();
+    t.vddr = spparam.vddr;
+    t.fls = spparam.fls;
+    t = T(t);
+    boolExp sp1 = boolExp();
+    sp1.vddr = spparam.vddr;
+    sp1.fls = spparam.fls;
+    sp1 = SP(sp1);
+    if (sem.equivalentes(spparam.tipo, t.tipo)) {
+      sp1.dir = sem.nuevaTemporal();
+      int tipoTmp = sem.maximo(spparam.tipo, t.tipo);
+      string d1 = sem.ampliar(spparam.dir, spparam.tipo, tipoTmp);
+      string d2 = sem.ampliar(t.dir, t.tipo, tipoTmp);
+      genCod(cuadrupla(sp1.dir, "=", d1 + "!=", d2));
+      genCod(cuadrupla("if", sp1.dir, "goto", t.vddr));
+      genCod(cuadrupla("goto", t.fls, "", ""));
+      sp.tipo = sp1.tipo;
+      spparam.tipo = t.tipo;
+      spparam.dir = t.dir;
+    }
+  }
+  else {
+    sp.tipo = spparam.tipo;
+    sp.dir = spparam.dir;
+  }
+  return sp;
+}
+
+boolExp T(boolExp tparam) {
+  exp t = exp();
+  exp u = U();
+  boolExp tp = boolExp();
+  tp.tipo = u.tipo();
+  tp.dir = u.dir();
+  tp.vddr = tparam.vddr;
+  tp.fls = tparam.fls;
+  tp = TP(tp);
+  t.tipo = tp.tipo;
+  t.dir = tp.dir;
+  return t;
+}
+
+exp TP(boolExp tpparam) {
+  exp tp = exp();
+  if (equals(tokenActual, LESS)) {
+    eat(LESS);
+    exp u = U();
+    if (sem.equivalentes(tpparam.tipo, u.tipo)) {
+      tp.tipo = 0;
+      tp.dir = sem.nuevaTemporal();
+      int tipoTmp = sem.maximo(tpparam.tipo, u.tipo);
+      string d1 = sem.ampliar(tpparam.dir, tpparam.tipo, tipoTmp);
+      string d2 = sem.ampliar(u.dir, u.tipo, tipoTmp);
+      genCod(cuadrupla(tp.dir + "=", d1, "<", d2));
+      genCod(cuadrupla("if", tp.dir, "goto", tpparam.vddr));
+      genCod(cuadrupla("goto", tpparam.fls, "", ""));
+    }
+    else {
+      error("Tipos incompatibles");
+    }
+  }
+  else if (equals(tokenActual, LEQ)) {
+    eat(LEQ);
+    exp u = U();
+    if (sem.equivalentes(tpparam.tipo, u.tipo)) {
+      tp.tipo = 0;
+      tp.dir = sem.nuevaTemporal();
+      int tipoTmp = sem.maximo(tpparam.tipo, u.tipo);
+      string d1 = sem.ampliar(tpparam.dir, tpparam.tipo, tipoTmp);
+      string d2 = sem.ampliar(u.dir, u.tipo, tipoTmp);
+      genCod(cuadrupla(tp.dir + "=", d1, "<=", d2));
+      genCod(cuadrupla("if", tp.dir, "goto", tpparam.vddr));
+      genCod(cuadrupla("goto", tpparam.fls, "", ""));
+    }
+    else {
+      error("Tipos incompatibles");
+    }
+  }
+  else if (equals(tokenActual, GEQ)) {
+    eat(GEQ);
+    exp u = U();
+    if (sem.equivalentes(tpparam.tipo, u.tipo)) {
+      tp.tipo = 0;
+      tp.dir = sem.nuevaTemporal();
+      int tipoTmp = sem.maximo(tpparam.tipo, u.tipo);
+      string d1 = sem.ampliar(tpparam.dir, tpparam.tipo, tipoTmp);
+      string d2 = sem.ampliar(u.dir, u.tipo, tipoTmp);
+      genCod(cuadrupla(tp.dir + "=", d1, ">=", d2));
+      genCod(cuadrupla("if", tp.dir, "goto", tpparam.vddr));
+      genCod(cuadrupla("goto", tpparam.fls, "", ""));
+    }
+    else {
+      error("Tipos incompatibles");
+    }
+  }
+  else if (equals(tokenActual, GREATER)) {
+    eat(GREATER);
+    exp u = U();
+    if (sem.equivalentes(tpparam.tipo, u.tipo)) {
+      tp.tipo = 0;
+      tp.dir = sem.nuevaTemporal();
+      int tipoTmp = sem.maximo(tpparam.tipo, u.tipo);
+      string d1 = sem.ampliar(tpparam.dir, tpparam.tipo, tipoTmp);
+      string d2 = sem.ampliar(u.dir, u.tipo, tipoTmp);
+      genCod(cuadrupla(tp.dir + "=", d1, ">", d2));
+      genCod(cuadrupla("if", tp.dir, "goto", tpparam.vddr));
+      genCod(cuadrupla("goto", tpparam.fls, "", ""));
+    }
+    else {
+      error("Tipos incompatibles");
+    }
+  }
+  else {
+    tp.tipo = tpparam.tipo;
+    tp.dir = tpparam.dir;
+  }
+  return tp;
+}
+
+exp U() {
   exp u = exp();
   exp v = V();
   exp up = exp();
@@ -617,7 +779,7 @@ void U() {
   return u;
 }
 
-void UP(exp upparam) {
+exp UP(exp upparam) {
   exp up = exp();
   if (equals(tokenActual, PLUS)) {
     eat(PLUS);
