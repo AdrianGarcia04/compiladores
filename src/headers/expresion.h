@@ -27,17 +27,17 @@ struct boolExp : exp {
 struct boolExpH : boolExp {
     string dirH;
     int tipoH;
-
+    string sig;
+    string valor;
     boolExpH(){}
     boolExpH(string dirH, int tipoH) : dirH(dirH), tipoH(tipoH){}
 };
 
 struct blockExp : exp {
     string sig; // Etiqueta de siguiente
-    string sigH; //Para heredados
 
     blockExp(){}
-    blockExp(string sig, string sigH) : sig(sig), sigH(sigH){}
+    blockExp(string sig) : sig(sig){}
 };
 
 
@@ -50,7 +50,8 @@ struct argExp : exp {
 
 struct switchExp : blockExp {
     string prueba;
-
+    string etqPrueba;
+    string id;
     switchExp(){}
     switchExp(string prueba) : prueba(prueba){}
 };

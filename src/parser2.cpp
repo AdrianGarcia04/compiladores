@@ -15,7 +15,8 @@ stack<tablasimbolos> pilaTS;
 stack<tablatipos> pilaTT;
 tablacadenas cadenas;
 stack<int> pilaDir;
-//Lista de Retorno
+list<int> listaRetorno;
+semantico sem;
 
 void parse() {
     A();
@@ -110,7 +111,7 @@ exp E(exp ep) {
       pilaTT.top().agregar(tipo_s(5,"array",numval,-1,e1.tipo));
       e.tipo = pilaTT.top().tabla.back().id;
     } else {
-        e.tipo = e.base;
+        e.tipo = e.base; //TODO: Algo tiene que cambiar aqui.
     }
     return e;
 }
@@ -122,7 +123,8 @@ exp F(exp ft) {
     f.tipo = ft.tipo;
     exp fp = FP(f);
     if (!pilaTS.top().buscar(id)) {
-        pilaTS.top().agregar(simbolo(id,dir,f.tipo,"var", nullptr));
+        list<int> v;
+        pilaTS.top().agregar(simbolo(id,dir,f.tipo,"var", v));
         dir += pilaTT.top().get_tam(f.tipo);
     }else{
         error("El id no está definido.");
@@ -139,7 +141,8 @@ exp FP(exp fpt) {
         exp fp = exp();
         fp.tipo = fpt.tipo;
         if (!pilaTS.top().buscar(id)) {
-            pilaTS.top().agregar(simbolo(id,dir,fp.tipo,"var", nullptr));
+            list<int> v;
+            pilaTS.top().agregar(simbolo(id,dir,fp.tipo,"var", v));
             dir += pilaTT.top().get_tam(fp.tipo);
         }else{
             error("El id ya está declarado");
@@ -163,15 +166,14 @@ void G() {
         pilaDir.push(dir);
         dir = 0;
         if (!pilaTS.top().buscar(id)) {
-            /*equivalentes(listaRetorno.tipo,c.tipo)*/
-            if (true) {
-                pilaTS.top().agregar(simbolo(id,-1,c.tipo,'func',h.lista));
-                genCod(cuadrupla("label", "","",id));
+            if (sem.equivalentes(listaRetorno.front(),c.tipo)) {
+                pilaTS.top().agregar(simbolo(id,-1,c.tipo,"func",h.lista));
+                sem.genCod(cuadrupla("label", "","",id));
                 blockExp j = blockExp();
-                j.sig = nuevaEtiqueta();
+                j.sig = sem.nuevaEtiqueta();
                 j = J(j);
                 G();
-                genCod(cuadrupla("label","","",j.sig));
+                sem.genCod(cuadrupla("label","","",j.sig));
             }else{
                 error("Retorno no coincide");
             }
@@ -201,14 +203,15 @@ argExp H() {
     return h;
 }
 
-exp I() {
+argExp I() {
     argExp i = argExp();
     exp c = C();
     string id = tokenActual->valor;
     eat(ID);
     argExp ip = IP(c);
     if (!pilaTS.top().buscar(id)) {
-        pilaTS.top().agregar(simbolo(id,dir,c.tipo,"param", nullptr));
+        list<int> v;
+        pilaTS.top().agregar(simbolo(id,dir,c.tipo,"param",v));
         dir += pilaTT.top().get_tam(c.tipo);
     }else{
         error(id + "ya está declarado");
@@ -227,7 +230,8 @@ argExp IP(exp ci) {
         eat(ID);
         argExp ip1 = IP(c);
         if (!pilaTS.top().buscar(id)) {
-            pilaTS.top().agregar(simbolo(id,dir,c.tipo,"param", nullptr));
+            list<int> v; //Muchos datos considerar a cambiar a apuntador.
+            pilaTS.top().agregar(simbolo(id,dir,c.tipo,"param", v));
             dir += pilaTT.top().get_tam(c.tipo);
         }else{
             error(id + "ya está declarado");
@@ -245,25 +249,21 @@ blockExp J(blockExp jh){
     eat(LKEY);
     j.sig = jh.sig;
     B();
-    blockExp k = K(j);
+    K();
     eat(RKEY);
-    genCod(cuadrupla("label","","",j.sig));
+    sem.genCod(cuadrupla("label","","",j.sig));
     return j;
 }
 
-blockExp K(blockExp j){
-    blockExp k = blockExp();
-    k.sig = j.sig;
-    blockExp l = L();
-    blockExp kp = blockExp();
-    kp.sigH = k.sig;
-    kp = KP(kp);
-    l.sig = kp.sig;
-    return k;
+void K(){
+    blockExp l;
+    l.sig = sem.nuevaEtiqueta();
+    sem.genCod(cuadrupla("label","","",l.sig));
+    L(l);
+    KP();
 }
 
-blockExp KP(blockExp k){
-    blockExp kp;
+void KP(){
     if (equals(tokenActual,ID) ||
         equals(tokenActual,IF) ||
         equals(tokenActual,WHILE) ||
@@ -274,26 +274,23 @@ blockExp KP(blockExp k){
         equals(tokenActual,SWITCH) ||
         equals(tokenActual,PRINT) ||
         equals(tokenActual,SCAN)) {
-        blockExp l = L();
-        kp.sigH = k.sigH;
-        kp = KP(kp);
-        l.sig = kp.sig;
-    }else{
-        kp.sig = kp.sigH;
+        blockExp l;
+        l.sig = sem.nuevaEtiqueta();
+        sem.genCod(cuadrupla("label","","",l.sig));
+        L(l);
     }
-    return kp;
 }
 
-blockExp L(){
+void L(blockExp l) {
     switch (tokenActual->clase) {
         case ID:
             exp p = P();
             eat(ASIG);
-            boolExp q = Q();
+            boolExp q = Q(boolExp());
             eat(PCOMA);
-            if (equivalentes(p.tipo,q.tipo)){
-                string d1 = reducir(q.dir,q.tipo,p.tipo);
-                genCod(cuadrupla("label","","",d1));
+            if (sem.equivalentes(p.tipo,q.tipo)){
+                string d1 = sem.reducir(q.dir,q.tipo,p.tipo);
+                sem.genCod(cuadrupla("label","","",d1));
             }else{
                 error("Tipos incompatibles");
             }
@@ -302,10 +299,209 @@ blockExp L(){
             eat(IF);
             eat(PIZQ);
             boolExp q;
-            q.vddr = nuevaEtiqueta();
-            q.fls = nuevoIndice();
+            q.vddr = sem.nuevaEtiqueta();
+            q.fls = sem.nuevoIndice();
+            q = Q(q);
+            eat(PDER);
+            blockExp l1 = blockExp();
+            l1.sig = l.sig;
+            L(l1);
+            boolExpH lp;
+            lp.sig = l.sig;
+            lp.listaIndices.push_back(q.fls);
+            LP(lp);
+            sem.genCod(cuadrupla("label","","",q.vddr));
+            break;
+        case WHILE:
+            eat(WHILE);
+            eat(PIZQ);
+            boolExp q;
+            q.vddr = sem.nuevaEtiqueta();
+            q.fls = l.sig;
+            q = Q(q);
+            eat(PDER);
+            blockExp l1;
+            l1.sig = sem.nuevaEtiqueta();
+            sem.genCod(cuadrupla("label","","",l1.sig));
+            L(l1);
+            sem.genCod(cuadrupla("label","","",q.vddr));
+            sem.genCod(cuadrupla("goto","","",l1.sig));
+            break;
+        case DO:
+            eat(DO);
+            blockExp l1;
+            l1.sig = sem.nuevaEtiqueta();
+            sem.genCod(cuadrupla("label","","",l1.sig));
+            L(l1);
+            eat(WHILE);
+            eat(PIZQ);
+            boolExp q;
+            q.vddr = sem.nuevaEtiqueta();
+            q.fls = l.sig;
+            q = Q(q);
+            eat(PDER);
+            sem.genCod(cuadrupla("label","","",q.vddr));
+            break;
+        case BREAK:
+            eat(BREAK);
+            eat(PCOMA);
+            sem.genCod(cuadrupla("goto","","",l.sig));
+            break;
+        case LKEY:
+            blockExp j;
+            j.sig = l.sig;
+            J(j);
+            break;
+        case RETURN:
+            eat(RETURN);
+            LPP();
+            break;
+
+        case SWITCH:
+            eat(SWITCH);
+            eat(PIZQ);
+            q = Q(q);
+            eat(PDER);
+            eat(LKEY);
+            switchExp m;
+            m.etqPrueba = sem.nuevaEtiqueta();
+            sem.genCod(cuadrupla("goto","","",m.etqPrueba));
+            m.sig = l.sig;
+            m.id = q.dir;
+            m = M(m);
+            eat(RKEY);
+            sem.genCod(cuadrupla("label","","",m.etqPrueba));
+            sem.genCod(cuadrupla("label","","",m.prueba));
+            break;
+        case PRINT:
+            eat(PRINT);
+            boolExpH u;
+            u = U(u);
+            eat(PCOMA);
+            sem.genCod(cuadrupla("print","","",u.valor));
+            break;
+        case SCAN:
+            eat(SCAN);
+            exp p = P();
+            sem.genCod(cuadrupla("scan","","",p.dir));
+            break;
+        default:
+            error("Valor no esperado");
+    }
+}
+
+void LP(boolExpH lp){
+    if (equals(tokenActual,ELSE)){
+        eat(ELSE);
+        blockExp l;
+        l.sig = lp.sig;
+        L(l);
+        sem.genCod(cuadrupla("goto","","",l.sig));
+        sem.genCod(cuadrupla("label","","",lp.listaIndices.front()));
+        //TODO: reemplazar_indices(lp.listaIndices,nuevaEtiqueta(),codigoInt)
+    }else{
+        //TODO: reemplazar_indices(lp.listaIndices,codigoInt)
+    }
+}
+
+void LPP(){
+    if (equals(tokenActual,PCOMA)){
+        listaRetorno.push_back(4); //void == 4
+        sem.genCod(cuadrupla("return","","",""));
+    }else{
+        boolExpH u;
+        u = U(u);
+        listaRetorno.push_back(u.tipo);
+        sem.genCod(cuadrupla("return","","",u.dir));
+    }
+}
+
+switchExp M(switchExp m){
+    switchExp mp;
+
+    return mp;
+}
+
+//TODO N
+
+//TODO O
+
+exp P(){
+    exp p;
+    string id = tokenActual->valor;
+    eat(ID);
+    p.base = id;
+    p = PP(p);
+    //Una vez concluída P' p.dir y p.tipo están asignados.
+    return p;
+}
+
+exp PP(exp p){
+    exp pp;
+    pp.base = p.base;
+    if (equals(tokenActual,CIZQ)){
+        arrayExp aa;
+        aa.base = pp.base;
+        aa = AA(aa);
+        pp.dir = aa.dir;
+        pp.tipo = aa.tipo;
+    }else {
+        if (pilaTS.top().buscar(pp.base)){
+            pp.dir = pp.base;
+            pp.tipo = pilaTS.top().get_tipo(pp.dir);
+        }else {
+            error("ID no declarado.");
+        }
+    }
+}
+
+boolExp Q(boolExp q){
+    boolExp qu;
+    qu.vddr = q.vddr;
+    qu.fls = q.fls;
+    boolExp r;
+    r.vddr = q.vddr;
+    r.fls = sem.nuevoIndice();
+    r = R(r);
+    boolExpH qp;
+    qp.vddr = qu.vddr;
+    qp.fls = qu.fls;
+    qp.tipoH = r.tipo;
+    qp.listaIndices.push_back(r.fls);
+    qp = QP(qp);
+    qu.tipo = qp.tipo;
+    sem.genCod(cuadrupla("label","","",r.fls));
+    return qu;
+}
+
+boolExpH QP(boolExpH q){
+    if (equals(tokenActual,OR)){
+        eat(OR);
+        boolExpH qp;
+        qp.vddr = q.vddr;
+        qp.fls = q.fls;
+        qp.listaIndices = q.listaIndices;
+        boolExp r;
+        r.vddr = q.vddr;
+        r.fls = sem.nuevoIndice();
+        r = R(r);
+        if (sem.equivalentes(q.tipoH,r.tipo)){
+            boolExpH qp1;
+            qp1.tipoH = r.tipo;
+            qp1.vddr = qp.vddr;
+            qp1.fls = qp.fls;
+            qp1.listaIndices = qp.listaIndices;
+            qp1.listaIndices.push_back(r.fls);
+            qp1 = QP(qp1);
+            qp.tipo = qp1.tipo;
+            sem.genCod(cuadrupla("label","","",qp1.fls));
+        }else{
+            error("Tipos no compatibles");
+        }
+    }else{
 
     }
+
 }
 
 exp AA(exp aaParam) {
@@ -320,7 +516,7 @@ exp AA(exp aaParam) {
         if (pilaTT.top().get_nom(tipoTmp) == 5) { // array
           exp aap = exp();
           aap.tipo = pilaTT.top().get_base(tipoTmp);
-          aap.dir = nuevaTemporal();
+          aap.dir = sem.nuevaTemporal();
           aap.dir = pilaTT.top().get_tam(aap.tipo);
           // genCod(cuadrupla("dirTmp", "","",id));
           AAP();
@@ -354,10 +550,10 @@ exp AAP(exp aapParam) {
     eat(CDER);
     if (q.tipo == 0) { // INT
       if (pilaTT.top().get_nom(aapParam.tipo) == 5) { // array
-        exp aap1 = exp();
+        arrayExp aap1 = arrayExp();
         aap1.tipo = pilaTT.top().get_base(aapParam.tipo);
-        int dirTmp = nuevaTemporal();
-        aap1.dir = nuevaTemporal();
+        int dirTmp = sem.nuevaTemporal();
+        aap1.dir = sem.nuevaTemporal();
         aap1.tam = pilaTT.top().get_tam(aapParam.tipo);
         // genCod(cuadrupla("dirTmp", "","",id));
         // genCod(cuadrupla("dirTmp", "","",id));

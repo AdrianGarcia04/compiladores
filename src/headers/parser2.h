@@ -51,47 +51,47 @@ exp FP(exp fp);
 /**
  * Función para prueba y empate del No-terminal G
  */
-exp G();
+void G();
 
 /**
  * Función para prueba y empate del No-terminal H
  */
-exp H();
+argExp H();
 
 /**
  * Función para prueba y empate del No-terminal I
  */
-exp I();
+argExp I();
 
 /**
  * Función para prueba y empate del No-terminal IP (I prima)
  */
-exp IP();
+argExp IP(exp ip);
 
 /**
  * Función para prueba y empate del No-terminal J
  */
-exp J();
+blockExp J(blockExp j);
 
 /**
  * Función para prueba y empate del No-terminal K
  */
-exp K();
+void K();
 
 /**
  * Función para prueba y empate del No-terminal KP (K prima)
  */
-exp KP();
+void KP();
 
 /**
  * Función para prueba y empate del No-terminal L
  */
-exp L();
+void L(blockExp l);
 
 /**
  * Función para prueba y empate del No-terminal LP (L prima)
  */
-exp LP();
+void LP(boolExpH l);
 
 /**
  * Función para prueba y empate del No-terminal LPP (L bi-prima)
@@ -118,10 +118,12 @@ exp O();
  */
 exp P();
 
+exp PP(exp);
+
 /**
  * Función para prueba y empate del No-terminal Q
  */
-exp Q();
+boolExp Q(boolExp q);
 
 /**
  * Función para prueba y empate del No-terminal QP (Q prima)
