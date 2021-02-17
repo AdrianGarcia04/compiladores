@@ -7,17 +7,17 @@ struct simbolo {
   string id;
   int dir;
   int tipo;
-  int var;
+  string var;
   list<int> args;
 
   simbolo(){}
-  simbolo(string id, int dir, int tipo, int var, list<int> args) : id(id), dir(dir), tipo(tipo), var(var), args(args){}
+  simbolo(string id, int dir, int tipo, string var, list<int> args) : id(id), dir(dir), tipo(tipo), var(var), args(args){}
 
   string str() {
     return id
         + "\t" + std::to_string(dir)
         + "\t" + std::to_string(tipo)
-        + "\t" + std::to_string(var);
+        + "\t" + var;
   }
 
   bool operator==(const struct simbolo& a) const {
@@ -60,10 +60,10 @@ struct tablasimbolos {
     return -1;
   }
 
-  int get_var(string id) {
+  string get_var(string id) {
     for (simbolo simbolo : tabla)
         if (simbolo.id == id)
             return simbolo.var;
-    return -1;
+    return NULL;
   }
 };

@@ -56,3 +56,4 @@ dkms.conf
 # Others
 /src/lex.yy.cpp
 /src/prueba.in
+/src/*.ci

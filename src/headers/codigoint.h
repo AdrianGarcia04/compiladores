@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <fstream> 
 using namespace std;
 
 struct cuadrupla{
@@ -12,6 +13,10 @@ struct cuadrupla{
 
     cuadrupla(){}
     cuadrupla(string op, string arg1, string arg2, string res) : op(op), arg1(arg1), arg2(arg2), res(res){}
+
+    string str() {
+      return op + ' ' + arg1 + ' ' + arg2 + ' ' + res;
+    }
 };
 
 struct CodigoInt{
@@ -24,11 +29,15 @@ struct CodigoInt{
       codigo.push_back(cuadrupla);
     }
 
-    void mostrar() {
-      // TODO
-    }
+    void imprimir(string nombre) {
+      ofstream archivo;
+      archivo.open(nombre);
 
-    void imprimir(string fileName) {
-      // TODO
+      if(archivo.fail())
+        std::cout << "Error al escribir en el archivo" << '\n';
+
+      for(cuadrupla cuadrupla : codigo)
+        archivo << cuadrupla.str() << '\n';
+      archivo.close();
     }
 };

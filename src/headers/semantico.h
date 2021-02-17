@@ -11,6 +11,14 @@ struct semantico{
     semantico(){}
     semantico(CodigoInt codigo) : codigo(codigo){}
 
+    void genCod(cuadrupla cuadrupla) {
+      codigo.genCod(cuadrupla);
+    }
+
+    void imprimir(string nombre) {
+      codigo.imprimir(nombre);
+    }
+
     int maximo(int tipo1, int tipo2) {
         if (tipo1 == tipo2)
             return tipo1;
@@ -45,14 +53,6 @@ struct semantico{
         return etq;
     }
 
-    bool equivalentes(int tipo1, int tipo2) {
-        if (tipo1 == tipo2)
-            return true;
-        if (tipo1 == 0 && tipo2 == 1 || tipo1 == 1 && tipo2 == 0)
-            return true;
-        return false;
-    }
-
     string nuevaEtiqueta() {
         static int numEtq = 0;
         string etq = "l" + numEtq++;
@@ -63,5 +63,13 @@ struct semantico{
         static int numIndice = 0;
         string ind = "i" + numIndice++;
         return ind;
+    }
+
+    bool equivalentes(int tipo1, int tipo2) {
+        if (tipo1 == tipo2)
+            return true;
+        if (tipo1 == 0 && tipo2 == 1 || tipo1 == 1 && tipo2 == 0)
+            return true;
+        return false;
     }
 };
