@@ -14,7 +14,7 @@ struct exp {
     exp(int tipo, string dir, string base) : tipo(tipo), dir(dir), base(base){}
 };
 
-struct boolExp {
+struct boolExp : exp {
     // Etiquetas
     string vddr;
     string fls;
@@ -24,7 +24,7 @@ struct boolExp {
     boolExp(string vddr, string fls, list<string> listaIndices) : vddr(vddr), fls(fls), listaIndices(listaIndices){}
 };
 
-struct boolExpH{
+struct boolExpH : exp {
     string dirH;
     int tipoH;
 
@@ -32,7 +32,7 @@ struct boolExpH{
     boolExpH(string dirH, int tipoH) : dirH(dirH), tipoH(tipoH){}
 };
 
-struct blockExp{
+struct blockExp : exp {
     string sig; // Etiqueta de siguiente
     string sigH; //Para heredados
 
@@ -41,21 +41,21 @@ struct blockExp{
 };
 
 
-struct argExp{
+struct argExp : exp {
     list<int> lista; //<Lista de tipos>
 
     argExp(){}
     argExp(list<int> lista) : lista(lista){}
 };
 
-struct switchExp{
+struct switchExp : exp {
     string prueba;
 
     switchExp(){}
     switchExp(string prueba) : prueba(prueba){}
 };
 
-struct caseExp{
+struct caseExp : exp {
     int id;
     string inicio;
 
@@ -63,7 +63,7 @@ struct caseExp{
     caseExp(int id, string inicio) : id(id) , inicio(inicio){}
 };
 
-struct defaultExp{
+struct defaultExp : exp {
     string inicio;
 
     defaultExp() {}
@@ -71,7 +71,7 @@ struct defaultExp{
 };
 
 
-struct arrayExp{
+struct arrayExp : exp {
     int tam;
 
     arrayExp() {}
