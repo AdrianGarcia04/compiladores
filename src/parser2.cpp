@@ -553,22 +553,106 @@ boolExpH QP(boolExpH q){
 
 }
 
-arrayExp AA(arrayExp aaParam) {
-  arrayExp aa;
+void X() {
+  exp x = exp();
+  if (equals(tokenActual, PIZQ)) {
+    eat(PIZQ);
+    boolExp q = Q();
+    eat(PDER);
+    x.dir = q.dir;
+    x.tipo = q.tipo;
+  }
+  else if (equals(tokenActual, ID)) {
+    eat(ID);
+    if (equals(tokenActual, CIZQ)) {
+      AA();
+    }
+    else if (equals(tokenActual, PIZQ)) {
+      eat(PIZQ);
+      Y();
+      eat(PDER);
+    }
+  }
+  else if (equals(tokenActual, NUM)) {
+    int numval = stoi(tokenActual->valor);
+    eat(NUM);
+    x.dir = numval;
+    x.tipo = tokenActual->tipo;
+  }
+  else if (equals(tokenActual, STR)) {
+    string cadena = tokenActual->valor;
+    eat(STR);
+    cadenas.agregar(cadena);
+    x.dir = cadenas.get_ultima_pos();
+    x.tipo = 6; // Cadena
+  }
+  else if (equals(tokenActual, TRUE)) {
+    eat(TRUE);
+  }
+  else if (equals(tokenActual, FALSE)) {
+    eat(FALSE);
+  }
+}
+
+argExp Y() {
+  argExp y = argExp();
+  if (equals(tokenActual, NOT)
+    || equals(tokenActual, MINUS)
+    || equals(tokenActual, PIZQ)
+    || equals(tokenActual, ID)
+    || equals(tokenActual, NUM)
+    || equals(tokenActual, STR)
+    || equals(tokenActual, TRUE)
+    || equals(tokenActual, FALSE)) {
+    argExp z = Z();
+    y.lista = z.lista;
+  }
+  else {
+
+  }
+  return y;
+}
+
+void Z() {
+  argExp zp = argExp();
+  boolExp q = Q();
+  argExp zp1 = ZP();
+  zp.lista = zp1.lista;
+  zp.lista.push_back(q.tipo);
+  genCod(cuadrupla("param", "", "", to_string(q.dir)));
+}
+
+argExp ZP() {
+  argExp zp = argExp();
+  if (equals(tokenActual,COMA)) {
+    eat(COMA);
+    boolExp q = Q();
+    argExp zp1 = ZP();
+    zp.lista = zp1.lista;
+    zp.lista.push_back(q.tipo);
+    genCod(cuadrupla("param", "", "", to_string(q.dir)));
+  }
+  else {
+    ; // lista vacia
+  }
+  return zp;
+}
+
+exp AA(exp aaParam) {
+  exp aa = exp();
   if (equals(tokenActual,CIZQ)) {
     eat(CIZQ);
-    boolExp q;
-    q = Q(q);
+    exp q = Q();
     eat(CDER);
     if (pilaTS.top().buscar(aaParam.base)) {
       if (q.tipo == 0) {
         int tipoTmp = pilaTS.top().get_tipo(q.base);
         if (pilaTT.top().get_nom(tipoTmp) == "array") { // array
-          arrayExp aap;
+          exp aap = exp();
           aap.tipo = pilaTT.top().get_base(tipoTmp);
           aap.dir = sem.nuevaTemporal();
           aap.dir = pilaTT.top().get_tam(aap.tipo);
-          // genCod(cuadrupla("dirTmp", "","",id));
+          genCod(cuadrupla(to_string(aaParam.dir) + "=", to_string(q.dir), "*", to_string(aaParam.tam)));
           aap = AAP(aap);
           aa.dir = aap.dir;
           aa.tipo = aap.tipo;
@@ -592,12 +676,11 @@ arrayExp AA(arrayExp aaParam) {
   return aa;
 }
 
-arrayExp AAP(arrayExp aapParam) {
-  arrayExp aap;
+exp AAP(exp aapParam) {
+  exp aap = exp();
   if (equals(tokenActual,CIZQ)) {
     eat(CIZQ);
-    boolExp q;
-    q = Q(q);
+    exp q = Q();
     eat(CDER);
     if (q.tipo == 0) { // INT
       if (pilaTT.top().get_nom(aapParam.tipo) == "array") { // array
@@ -606,8 +689,9 @@ arrayExp AAP(arrayExp aapParam) {
         string dirTmp = sem.nuevaTemporal();
         aap1.dir = sem.nuevaTemporal();
         aap1.tam = pilaTT.top().get_tam(aapParam.tipo);
-        // genCod(cuadrupla(dirTmp, "","",id));
-        aap = AAP(aap);
+        genCod(cuadrupla("dirTmp =", to_string(q.dir), "*", to_string(aap1.tam)));
+        genCod(cuadrupla(to_string(aap1.dir), "=", "", to_string(aapParam + dirTmp)));
+        aap1 = AAP(aap1);
         aap.dir = aap1.dir;
         aap.tipo = aap1.tipo;
       }

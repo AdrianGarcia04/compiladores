@@ -49,4 +49,8 @@ struct tablacadenas {
   void eliminar(string cadena) {
     tabla.remove(cadena);
   }
+
+  int get_ultima_pos() {
+    return tabla.size();
+  }
 };
