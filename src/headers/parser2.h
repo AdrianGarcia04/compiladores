@@ -101,17 +101,17 @@ void LPP();
 /**
  * Función para prueba y empate del No-terminal M
  */
-switchExp M(switchExp m);
+switchExp M(switchExp mparam);
 
 /**
  * Función para prueba y empate del No-terminal N
  */
-exp N();
+blockExp N(switchExp mparam);
 
 /**
  * Función para prueba y empate del No-terminal O
  */
-exp O();
+void O();
 
 /**
  * Función para prueba y empate del No-terminal P
