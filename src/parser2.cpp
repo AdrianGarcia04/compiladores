@@ -2,6 +2,7 @@
 #include "parser2.h"
 #include "tablasimbolos.h"
 #include "tablatipos.h"
+#include "tablacadenas.h"
 #include "expresion.h"
 #include "codigoint.h"
 #include <stdio.h>
@@ -18,7 +19,7 @@ token *tokenActual;
 int dir;
 stack<tablasimbolos> pilaTS;
 stack<tablatipos> pilaTT;
-stack<string> cadenas;
+tablacadenas cadenas;
 stack<int> pilaDir;
 //Lista de Retorno
 
@@ -31,8 +32,17 @@ void parse() {
     4 - void
     */
 
+    pilaTS.push(tablasimbolos());
+    tablatipos tablaTipos = tablatipos();
 
-    A();
+    tablaTipos.agregar(tipo_s(0, "int",    4, -1, -1));
+    tablaTipos.agregar(tipo_s(1, "float",  4, -1, -1));
+    tablaTipos.agregar(tipo_s(2, "char",   4, -1, -1));
+    tablaTipos.agregar(tipo_s(3, "double", 4, -1, -1));
+    tablaTipos.agregar(tipo_s(4, "void",   4, -1, -1));
+    pilaTT.push(tablaTipos);
+
+    // A();
     //imprimir TS y TT
 }
 

@@ -1,7 +1,6 @@
 #pragma once
 #include "tokens.h"
 #include "tablasimbolos.h"
-#include "simbolo.h"
 #include "expresion.h"
 
 /**
@@ -234,9 +233,9 @@ int getTam(int id);
 /**
  * Función para imprimir Tabla de tipos
  */
-void printTT(tabla_simbolos *TT);
+// void printTT(tabla_simbolos *TT);
 
 /**
  * Función para imprimir Tabla de símbolos
  */
-void printTS(tabla_simbolos *TS);
+// void printTS(tabla_simbolos *TS);
