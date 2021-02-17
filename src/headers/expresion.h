@@ -24,7 +24,7 @@ struct boolExp : exp {
     boolExp(string vddr, string fls, list<string> listaIndices) : vddr(vddr), fls(fls), listaIndices(listaIndices){}
 };
 
-struct boolExpH : exp {
+struct boolExpH : boolExp {
     string dirH;
     int tipoH;
 
@@ -48,14 +48,14 @@ struct argExp : exp {
     argExp(list<int> lista) : lista(lista){}
 };
 
-struct switchExp : exp {
+struct switchExp : blockExp {
     string prueba;
 
     switchExp(){}
     switchExp(string prueba) : prueba(prueba){}
 };
 
-struct caseExp : exp {
+struct caseExp : switchExp {
     int id;
     string inicio;
 
@@ -63,7 +63,7 @@ struct caseExp : exp {
     caseExp(int id, string inicio) : id(id) , inicio(inicio){}
 };
 
-struct defaultExp : exp {
+struct defaultExp : switchExp {
     string inicio;
 
     defaultExp() {}
