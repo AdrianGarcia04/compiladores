@@ -1,5 +1,11 @@
 # Compiladores 2021-1 | Proyecto Final
 
+## Integrantes:
+
++ Eric Toporek Coca 31428498-7
++ Aldair Coronel Ruiz 31512683-1
++ Adrián García Pérez 31513122-4
+
 ## Instrucciones para compilación y ejecución
 1. Hacer `make` desde el directorio src/
 2. Ejecutar: ./bin/parser prueba.in
