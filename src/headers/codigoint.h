@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
+#include <list>
 #include <string>
-#include <fstream> 
+#include <fstream>
 using namespace std;
 
 struct cuadrupla{
@@ -20,13 +20,36 @@ struct cuadrupla{
 };
 
 struct CodigoInt{
-    vector<cuadrupla> codigo;
+    list<cuadrupla> codigo;
 
     CodigoInt(){}
-    CodigoInt(vector<cuadrupla> codigo) : codigo(codigo){}
+    CodigoInt(list<cuadrupla> codigo) : codigo(codigo){}
 
     void genCod(cuadrupla cuadrupla) {
       codigo.push_back(cuadrupla);
+    }
+
+    int reemplazarIndices(list<string> lista, int numEtiqueta) {
+      int nueva = numEtiqueta;
+      for(string currEtqt : lista) {
+        nueva = nueva + 1;
+        list<cuadrupla>::iterator i;
+        for (i = codigo.begin(); i != codigo.end(); i++)
+          if (i->res==currEtqt)
+          i->res = "l" + to_string(nueva);
+      }
+      list<cuadrupla>::iterator i;
+      i = codigo.end();
+      i--;
+      i->res = "l" + to_string(numEtiqueta);
+      return nueva;
+    }
+
+    string str() {
+      string str = "";
+      for (cuadrupla cuadrupla : codigo)
+          str = str + cuadrupla.str() + "\n";
+      return str;
     }
 
     void imprimir(string nombre) {

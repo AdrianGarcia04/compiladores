@@ -7,9 +7,10 @@ using namespace std;
 
 struct semantico{
     CodigoInt codigo;
+    int numEtq = 0;
 
     semantico(){}
-    semantico(CodigoInt codigo) : codigo(codigo){}
+    semantico(CodigoInt codigo, int numEtq) : codigo(codigo), numEtq(numEtq){}
 
     void genCod(cuadrupla cuadrupla) {
       codigo.genCod(cuadrupla);
@@ -54,9 +55,13 @@ struct semantico{
     }
 
     string nuevaEtiqueta() {
-        static int numEtq = 0;
         string etq = "l" + numEtq++;
         return etq;
+    }
+
+    void actualizaEtqt(int nueva) {
+        numEtq = nueva;
+        std::cout << to_string(numEtq);
     }
 
     string nuevoIndice(){
