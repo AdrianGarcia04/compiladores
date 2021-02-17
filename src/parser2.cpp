@@ -553,6 +553,29 @@ boolExpH QP(boolExpH q){
 
 }
 
+void W() {
+  exp w = exp();
+  if (equals(tokenActual, NOT)) {
+    eat(NOT);
+    exp w1 = W();
+    w.dir = sem.nuevaTemporal();
+    w.tipo = w1.tipo;
+    genCod(cuadrupla(w.dir"=", "!", w1.dir));
+  }
+  else if (equals(tokenActual, MINUS)) {
+    eat(MINUS);
+    exp w1 = W();
+    w.dir = sem.nuevaTemporal();
+    w.tipo = w1.tipo;
+    genCod(cuadrupla(w.dir"=", "-", w1.dir));
+  }
+  else {
+    exp x = X();
+    w.dir = x.dir;
+    w.tipo = x.tipo;
+  }
+}
+
 exp X() {
   exp x = exp();
   if (equals(tokenActual, PIZQ)) {
@@ -755,6 +778,19 @@ exp AAP(exp aapParam) {
 
 bool equivalentesListas(list<string> l1, list<string> l2) {
   return l1 == l2;
+}
+
+tablasimbolos fondo(stack<tablasimbolos> pila) {
+  list<tablasimbolos> aux;
+  while (!pila.empty()) {
+    aux.push_back(pila.top());
+    pila.pop();
+  }
+  tablasimbolos fondo = aux.front();
+  for(tablasimbolos tabla : aux) {
+    pila.push(tabla);
+  }
+  return fondo;
 }
 
 void eat(int clase) {
