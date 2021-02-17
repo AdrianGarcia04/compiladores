@@ -77,6 +77,10 @@ struct tablasimbolos {
    */
   tablasimbolos(list<simbolo> tabla) : tabla(tabla){}
 
+  /**
+   * Da la representación en cadena de la tabla
+   * @return string
+   */
   string str() {
     string str = "";
     for (simbolo simbolo : tabla)
@@ -113,6 +117,18 @@ struct tablasimbolos {
   }
 
   /**
+   * Da el valor de dir de un símbolo dado su identificador
+   * @param string el identificador del símbolo a buscar
+   * @return int el valor de dir del símbolo
+   */
+  int get_dir(string id) {
+    for (simbolo simbolo : tabla)
+        if (simbolo.id == id)
+            return simbolo.dir;
+    return -1;
+  }
+
+  /**
    * Da el tipo de un símbolo dado su identificador
    * @param string el identificador del símbolo a buscar
    * @return int el tipo del símbolo
@@ -134,5 +150,18 @@ struct tablasimbolos {
         if (simbolo.id == id)
             return simbolo.var;
     return NULL;
+  }
+
+  /**
+   * Da la lista de argumentos de un símbolo dado su identificador
+   * @param string el identificador del símbolo a buscar
+   * @return list<int> la lista de argumentos del símbolo
+   */
+  list<int> get_args(string id) {
+    for (simbolo simbolo : tabla)
+        if (simbolo.id == id)
+            return simbolo.args;
+    list<int> vacia;
+    return vacia;
   }
 };
