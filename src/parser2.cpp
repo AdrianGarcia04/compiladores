@@ -308,7 +308,77 @@ blockExp L(){
     }
 }
 
+exp AA(exp aaParam) {
+  exp aa = exp();
+  if (equals(tokenActual,CIZQ)) {
+    eat(CIZQ);
+    exp q = Q();
+    eat(CDER);
+    if (pilaTS.top().buscar(aaParam.base)) {
+      if (q.tipo == 0) {
+        int tipoTmp = pilaTS.top().get_tipo(q.base);
+        if (pilaTT.top().get_nom(tipoTmp) == 5) { // array
+          exp aap = exp();
+          aap.tipo = pilaTT.top().get_base(tipoTmp);
+          aap.dir = nuevaTemporal();
+          aap.dir = pilaTT.top().get_tam(aap.tipo);
+          // genCod(cuadrupla("dirTmp", "","",id));
+          AAP();
+          aa.dir = aap.dir;
+          aa.tipo = aap.tipo;
+        }
+        else {
+          error("El id no es un arreglo");
+        }
+      }
+      else {
+        error("El índice del arreglo debe ser un entero")
+      }
+    }
+    else {
+      error("El id no está declarado");
+    }
+  }
+  else {
+    aa.dir = aaParam.dir;
+    aa.tipo = aaParam.tipo;
+  }
+  return aa;
+}
 
+exp AAP(exp aapParam) {
+  exp aap = exp();
+  if (equals(tokenActual,CIZQ)) {
+    eat(CIZQ);
+    exp q = Q();
+    eat(CDER);
+    if (q.tipo == 0) { // INT
+      if (pilaTT.top().get_nom(aapParam.tipo) == 5) { // array
+        exp aap1 = exp();
+        aap1.tipo = pilaTT.top().get_base(aapParam.tipo);
+        int dirTmp = nuevaTemporal();
+        aap1.dir = nuevaTemporal();
+        aap1.tam = pilaTT.top().get_tam(aapParam.tipo);
+        // genCod(cuadrupla("dirTmp", "","",id));
+        // genCod(cuadrupla("dirTmp", "","",id));
+        AAP();
+        aap.dir = aap1.dir;
+        aap.tipo = aap1.tipo;
+      }
+      else {
+        error("El id no es un arreglo");
+      }
+    }
+    else {
+      error("El índice del arreglo debe ser un entero")
+    }
+  }
+  else {
+    aap.dir = aapParam.dir;
+    aap.tipo = aapParam.tipo;
+  }
+  return aap;
+}
 
 void eat(int clase) {
     if (equals(tokenActual, clase))
