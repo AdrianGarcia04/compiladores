@@ -428,15 +428,51 @@ void LPP(){
     }
 }
 
-switchExp M(switchExp m){
-    switchExp mp;
-
-    return mp;
+switchExp M(switchExp mparam) {
+  switchExp m = switchExp();
+  if (equals(tokenActual, CASE))
+  {
+    switchExp n = switchExp();
+    n.sig = mparam.sig;
+    blockExp n = N(n);
+    switchExp m1 = switchExp();
+    m1.sig = mparam.sig;
+    M(m1);
+    m.prueba = m.prueba || m1.prueba;
+    return m;
+  }
+  else if (equals(tokenActual, DEFAULT))
+  {
+    switchExp o = switchExp();
+    o.sig = mparam.sig;
+    O(o.sig);
+    m.prueba = o.prueba;
+  }
 }
 
-//TODO N
+blockExp N(switchExp mparam) {
+  eat(CASE);
+  eat(NUM);
+  eat(DDOT);
+  blockExp k = blockExp();
+  k.sig = mparam.sig;
+  K();
+  caseExp n = caseExp();
+  n.inicio = sem.nuevaEtiqueta();
+  // sem.genCod(cuadrupla(to_string() + "=="    ));
+  sem.genCod(cuadrupla("label", "", "", n.inicio));
+}
 
-//TODO O
+void O(switchExp oparam) {
+  eat(DEFAULT);
+  eat(DDOT);
+  switchExp k = switchExp();
+  k.sig = oparam.sig;
+  K();
+  caseExp o = caseExp();
+  o.inicio = sem.nuevaEtiqueta();
+  sem.genCod(cuadrupla("label", "", "", o.inicio));
+}
 
 exp P(){
     exp p;
