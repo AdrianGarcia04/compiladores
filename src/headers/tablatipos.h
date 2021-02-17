@@ -1,29 +1,19 @@
 #pragma once
-
-#include <stack>
-#include <vector>
 #include <string>
-#include "tipo.h"
-
+#include <list>
 using namespace std;
 
-typedef struct tabla_tipos {
-    vector<tipo> tabla;
-public:
-    bool buscar(int id);
-    bool insertar(tipo s);
-    void imprimir();
-} tabla_tipos;
+struct tipo_s {
+  int id;
+  string tipo;
+  int tam;
+  int elem;
+  int tipoBase;
 
-typedef struct pila_tipos{
-    stack<tabla_tipos*> pila;
-public:
-    void push(tabla_tipos* tabla);
-    void pop();
-    tabla_tipos* top();
-    void insertar_tabla();
-} pila_tipos;
+  tipo_s(){}
+  tipo_s(int id, string tipo, int tam, int elem, int tipoBase) : id(id), tipo(tipo), tam(tam), elem(elem), tipoBase(tipoBase){}
+};
 
-tabla_tipos* crear_tabla_tipos();
-
-pila_tipos* crear_pila_tipos();
+struct tablatipos {
+  list<tipo_s> tabla;
+};
