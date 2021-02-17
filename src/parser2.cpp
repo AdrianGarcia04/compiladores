@@ -553,27 +553,93 @@ boolExpH QP(boolExpH q){
 
 }
 
-void W() {
+exp V() {
+  exp v = exp();
+  exp w = W();
+  vp.tipo = w.tipo;
+  vp.dir = w.dir;
+  exp vp = VP(vp);
+  v.tipo = vp.tipo;
+  v.dir = vp.dir;
+  return v;
+}
+
+exp VP(exp vpparam) {
+  exp vp = exp();
+  if (equals(tokenActual, MULT)) {
+    eat(MULT);
+    exp w = W();
+    exp vp1 = VP();
+    if (sem.equivalentes(vpparam.tipo, w.tipo)) {
+      vp.tipo = vp1.tipo;
+      vp.dir = vp1.dir;
+      vp1.tipo = 0;
+      vp1.dir = nuevaTemporal();
+      genCod(cuadrupla(vp1.dir + "=", v.dir, "*", w.dir));
+    }
+    else {
+      error("Tipos incompatibles");
+    }
+  }
+  else if (equals(tokenActual, DIV)) {
+    eat(DIV);
+    exp w = W();
+    exp vp1 = VP();
+    if (sem.equivalentes(vpparam.tipo, w.tipo)) {
+      vp.tipo = vp1.tipo;
+      vp.dir = vp1.dir;
+      vp1.tipo = 0;
+      vp1.dir = nuevaTemporal();
+      genCod(cuadrupla(vp1.dir + "=", v.dir, "/", w.dir));
+    }
+    else {
+      error("Tipos incompatibles");
+    }
+  }
+  else if (equals(tokenActual, MOD)) {
+    eat(MOD);
+    exp w = W();
+    exp vp1 = VP();
+    if (sem.equivalentes(vpparam.tipo, w.tipo)) {
+      vp.tipo = vp1.tipo;
+      vp.dir = vp1.dir;
+      vp1.tipo = 0;
+      vp1.dir = nuevaTemporal();
+      genCod(cuadrupla(vp1.dir + "=", v.dir, "%", w.dir));
+    }
+    else {
+      error("Tipos incompatibles");
+    }
+  }
+  else {
+    vp.tipo = vpparam.tipo;
+    vp.dir = vpparam.dir;
+  }
+  return vp;
+}
+
+exp W() {
   exp w = exp();
   if (equals(tokenActual, NOT)) {
     eat(NOT);
     exp w1 = W();
     w.dir = sem.nuevaTemporal();
     w.tipo = w1.tipo;
-    genCod(cuadrupla(w.dir"=", "!", w1.dir));
+    genCod(cuadrupla(w.dir + "=", "!", w1.dir, ""));
   }
   else if (equals(tokenActual, MINUS)) {
     eat(MINUS);
     exp w1 = W();
     w.dir = sem.nuevaTemporal();
     w.tipo = w1.tipo;
-    genCod(cuadrupla(w.dir"=", "-", w1.dir));
+    genCod(cuadrupla(w.dir + "=", "-", w1.dir, ""));
   }
   else {
     exp x = X();
     w.dir = x.dir;
     w.tipo = x.tipo;
   }
+  return w;
 }
 
 exp X() {
