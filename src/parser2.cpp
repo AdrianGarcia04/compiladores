@@ -120,7 +120,8 @@ exp E(exp ep) {
       pilaTT.top().agregar(tipo_s(5,"array",numval,-1,e1.tipo));
       e.tipo = pilaTT.top().tabla.back().id;
     } else {
-        e.tipo = stoi(e.base); //TODO: Algo tiene que cambiar aqui.
+        e.tipo = 0; //TODO: Algo tiene que cambiar aqui.
+        // e.tipo = stoi(e.base); //TODO: Algo tiene que cambiar aqui.
     }
     return e;
 }
@@ -476,6 +477,7 @@ blockExp N(switchExp mparam) {
   n.inicio = sem.nuevaEtiqueta();
   // sem.genCod(cuadrupla(to_string() + "=="    ));
   sem.genCod(cuadrupla("label", "", "", n.inicio));
+  return k;
 }
 
 void O(switchExp oparam) {
@@ -500,7 +502,7 @@ exp P(){
 }
 
 exp PP(exp p){
-    exp pp;
+    exp pp = exp();
     pp.base = p.base;
     if (equals(tokenActual,CIZQ)){
         arrayExp aa;
@@ -516,6 +518,7 @@ exp PP(exp p){
             error("ID no declarado.");
         }
     }
+    return pp;
 }
 
 boolExp Q(boolExp q){
@@ -617,7 +620,7 @@ boolExpH RP(boolExpH rparam){
         sem.actualizaEtqt(ultima);
         rp.tipo = 0; //Int
     }
-
+  return rp;
 }
 
 boolExp S(boolExp sparam) {
