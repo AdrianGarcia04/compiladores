@@ -7,7 +7,9 @@ using namespace std;
 
 struct semantico{
     CodigoInt codigo;
+    int numTemp = 0;
     int numEtq = 0;
+    int numIndice = 0;
 
     semantico(){}
     semantico(CodigoInt codigo, int numEtq) : codigo(codigo), numEtq(numEtq){}
@@ -49,24 +51,21 @@ struct semantico{
     }
 
     string nuevaTemporal() {
-        static int numTemp = 0;
-        string etq = "t" + numTemp++;
+        string etq = "t" + to_string(numTemp++);
         return etq;
     }
 
     string nuevaEtiqueta() {
-        string etq = "l" + numEtq++;
+        string etq = "l" + to_string(numEtq++);
         return etq;
     }
 
     void actualizaEtqt(int nueva) {
         numEtq = nueva;
-        std::cout << to_string(numEtq);
     }
 
     string nuevoIndice(){
-        static int numIndice = 0;
-        string ind = "i" + numIndice++;
+        string ind = "i" + to_string(numIndice++);
         return ind;
     }
 
