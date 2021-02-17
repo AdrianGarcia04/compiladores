@@ -14,11 +14,11 @@ struct tipo_s {
   tipo_s(int id, string tipo, int tam, int elem, int tipoBase) : id(id), tipo(tipo), tam(tam), elem(elem), tipoBase(tipoBase){}
 
   string str() {
-    return std::to_string(id)
+    return to_string(id)
         + "\t" + tipo
-        + "\t" + std::to_string(tam)
-        + "\t" + std::to_string(elem)
-        + "\t" + std::to_string(tipoBase);
+        + "\t" + to_string(tam)
+        + "\t" + to_string(elem)
+        + "\t" + to_string(tipoBase);
   }
 
   bool operator==(const struct tipo_s& a) const {
