@@ -36,7 +36,7 @@ exp D();
 /**
  * Función para prueba y empate del No-terminal E
  */
-exp* E(exp e);
+exp E(exp e);
 
 /**
  * Función para prueba y empate del No-terminal F
@@ -46,7 +46,7 @@ exp F(exp f);
 /**
  * Función para prueba y empate del No-terminal FP (F prima)
  */
-exp FP();
+exp FP(exp fp);
 
 /**
  * Función para prueba y empate del No-terminal G

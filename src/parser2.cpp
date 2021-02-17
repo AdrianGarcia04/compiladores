@@ -1,4 +1,9 @@
 #include "parser2.h"
+#include <stdio.h>
+#include <iostream>
+#include <stdlib.h>
+#include <stack>
+#include <string>
 
 extern token *yylex();
 extern int yylineno;

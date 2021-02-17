@@ -10,17 +10,25 @@ struct cuadrupla{
     string arg2;
     string res;
 
-    cuadrupla(string op, string arg1, string arg2, string res){
-        this->op = op;
-        this->arg1 = arg1;
-        this->arg2 = arg2;
-        this->res = res;
-    }
+    cuadrupla(){}
+    cuadrupla(string op, string arg1, string arg2, string res) : op(op), arg1(arg1), arg2(arg2), res(res){}
 };
 
 struct CodigoInt{
     vector<cuadrupla> codigo;
-    void genCod(cuadrupla c);
-    void mostrar();
-    void imprimir(string fileName);
+
+    CodigoInt(){}
+    CodigoInt(vector<cuadrupla> codigo) : codigo(codigo){}
+
+    void genCod(cuadrupla cuadrupla) {
+      codigo.push_back(cuadrupla);
+    }
+
+    void mostrar() {
+      // TODO
+    }
+
+    void imprimir(string fileName) {
+      // TODO
+    }
 };
