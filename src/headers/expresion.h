@@ -7,7 +7,7 @@ using namespace std;
 struct exp {
     int tipo;
     string dir;
-    string base;
+    int base;
 
     exp(){}
 
