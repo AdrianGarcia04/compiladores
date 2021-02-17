@@ -96,12 +96,12 @@ void LP(boolExpH l);
 /**
  * Función para prueba y empate del No-terminal LPP (L bi-prima)
  */
-exp LPP();
+void LPP();
 
 /**
  * Función para prueba y empate del No-terminal M
  */
-exp M();
+switchExp M(switchExp m);
 
 /**
  * Función para prueba y empate del No-terminal N
@@ -128,7 +128,7 @@ boolExp Q(boolExp q);
 /**
  * Función para prueba y empate del No-terminal QP (Q prima)
  */
-exp QP();
+boolExpH QP(boolExpH q);
 
 /**
  * Función para prueba y empate del No-terminal R
@@ -208,12 +208,12 @@ exp ZP();
 /**
  * Función para prueba y empate del No-terminal AA
  */
-exp AA();
+arrayExp AA(arrayExp aa);
 
 /**
  * Función para prueba y empate del No-terminal AAP (AA prima)
  */
-exp AAP();
+arrayExp AAP(arrayExp aap);
 
 /**
  * Función para consumo de componente léxico actual al hacer empate

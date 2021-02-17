@@ -283,19 +283,20 @@ void KP(){
 
 void L(blockExp l) {
     switch (tokenActual->clase) {
-        case ID:
+        case ID: {
             exp p = P();
             eat(ASIG);
             boolExp q = Q(boolExp());
             eat(PCOMA);
-            if (sem.equivalentes(p.tipo,q.tipo)){
-                string d1 = sem.reducir(q.dir,q.tipo,p.tipo);
-                sem.genCod(cuadrupla("label","","",d1));
-            }else{
+            if (sem.equivalentes(p.tipo, q.tipo)) {
+                string d1 = sem.reducir(q.dir, q.tipo, p.tipo);
+                sem.genCod(cuadrupla("label", "", "", d1));
+            } else {
                 error("Tipos incompatibles");
             }
             break;
-        case IF:
+        }
+        case IF: {
             eat(IF);
             eat(PIZQ);
             boolExp q;
@@ -310,9 +311,10 @@ void L(blockExp l) {
             lp.sig = l.sig;
             lp.listaIndices.push_back(q.fls);
             LP(lp);
-            sem.genCod(cuadrupla("label","","",q.vddr));
+            sem.genCod(cuadrupla("label", "", "", q.vddr));
             break;
-        case WHILE:
+        }
+        case WHILE: {
             eat(WHILE);
             eat(PIZQ);
             boolExp q;
@@ -322,16 +324,17 @@ void L(blockExp l) {
             eat(PDER);
             blockExp l1;
             l1.sig = sem.nuevaEtiqueta();
-            sem.genCod(cuadrupla("label","","",l1.sig));
+            sem.genCod(cuadrupla("label", "", "", l1.sig));
             L(l1);
-            sem.genCod(cuadrupla("label","","",q.vddr));
-            sem.genCod(cuadrupla("goto","","",l1.sig));
+            sem.genCod(cuadrupla("label", "", "", q.vddr));
+            sem.genCod(cuadrupla("goto", "", "", l1.sig));
             break;
-        case DO:
+        }
+        case DO: {
             eat(DO);
             blockExp l1;
             l1.sig = sem.nuevaEtiqueta();
-            sem.genCod(cuadrupla("label","","",l1.sig));
+            sem.genCod(cuadrupla("label", "", "", l1.sig));
             L(l1);
             eat(WHILE);
             eat(PIZQ);
@@ -340,51 +343,58 @@ void L(blockExp l) {
             q.fls = l.sig;
             q = Q(q);
             eat(PDER);
-            sem.genCod(cuadrupla("label","","",q.vddr));
+            sem.genCod(cuadrupla("label", "", "", q.vddr));
             break;
-        case BREAK:
+        }
+        case BREAK: {
             eat(BREAK);
             eat(PCOMA);
-            sem.genCod(cuadrupla("goto","","",l.sig));
+            sem.genCod(cuadrupla("goto", "", "", l.sig));
             break;
-        case LKEY:
+        }
+        case LKEY: {
             blockExp j;
             j.sig = l.sig;
             J(j);
             break;
-        case RETURN:
+        }
+        case RETURN: {
             eat(RETURN);
             LPP();
             break;
-
-        case SWITCH:
+        }
+        case SWITCH: {
             eat(SWITCH);
             eat(PIZQ);
+            boolExp q;
             q = Q(q);
             eat(PDER);
             eat(LKEY);
             switchExp m;
             m.etqPrueba = sem.nuevaEtiqueta();
-            sem.genCod(cuadrupla("goto","","",m.etqPrueba));
+            sem.genCod(cuadrupla("goto", "", "", m.etqPrueba));
             m.sig = l.sig;
             m.id = q.dir;
             m = M(m);
             eat(RKEY);
-            sem.genCod(cuadrupla("label","","",m.etqPrueba));
-            sem.genCod(cuadrupla("label","","",m.prueba));
+            sem.genCod(cuadrupla("label", "", "", m.etqPrueba));
+            sem.genCod(cuadrupla("label", "", "", m.prueba));
             break;
-        case PRINT:
+        }
+        case PRINT: {
             eat(PRINT);
             boolExpH u;
             u = U(u);
             eat(PCOMA);
-            sem.genCod(cuadrupla("print","","",u.valor));
+            sem.genCod(cuadrupla("print", "", "", u.valor));
             break;
-        case SCAN:
+        }
+        case SCAN: {
             eat(SCAN);
             exp p = P();
-            sem.genCod(cuadrupla("scan","","",p.dir));
+            sem.genCod(cuadrupla("scan", "", "", p.dir));
             break;
+        }
         default:
             error("Valor no esperado");
     }
@@ -398,9 +408,11 @@ void LP(boolExpH lp){
         L(l);
         sem.genCod(cuadrupla("goto","","",l.sig));
         sem.genCod(cuadrupla("label","","",lp.listaIndices.front()));
-        //TODO: reemplazar_indices(lp.listaIndices,nuevaEtiqueta(),codigoInt)
+        int ultima = sem.codigo.reemplazarIndices(lp.listaIndices,sem.numEtq);
+        sem.actualizaEtqt(ultima);
     }else{
-        //TODO: reemplazar_indices(lp.listaIndices,codigoInt)
+        int ultima= sem.codigo.reemplazarIndices(lp.listaIndices,sem.numEtq++);
+        sem.actualizaEtqt(ultima);
     }
 }
 
@@ -475,12 +487,12 @@ boolExp Q(boolExp q){
 }
 
 boolExpH QP(boolExpH q){
+    boolExpH qp;
+    qp.vddr = q.vddr;
+    qp.fls = q.fls;
+    qp.listaIndices = q.listaIndices;
     if (equals(tokenActual,OR)){
         eat(OR);
-        boolExpH qp;
-        qp.vddr = q.vddr;
-        qp.fls = q.fls;
-        qp.listaIndices = q.listaIndices;
         boolExp r;
         r.vddr = q.vddr;
         r.fls = sem.nuevoIndice();
@@ -499,27 +511,29 @@ boolExpH QP(boolExpH q){
             error("Tipos no compatibles");
         }
     }else{
-
+        int ultimaEtq = sem.codigo.reemplazarIndices(qp.listaIndices, stoi(qp.fls.substr(1)));
+        sem.actualizaEtqt(ultimaEtq);
     }
 
 }
 
-exp AA(exp aaParam) {
-  exp aa = exp();
+arrayExp AA(arrayExp aaParam) {
+  arrayExp aa;
   if (equals(tokenActual,CIZQ)) {
     eat(CIZQ);
-    exp q = Q();
+    boolExp q;
+    q = Q(q);
     eat(CDER);
     if (pilaTS.top().buscar(aaParam.base)) {
       if (q.tipo == 0) {
         int tipoTmp = pilaTS.top().get_tipo(q.base);
-        if (pilaTT.top().get_nom(tipoTmp) == 5) { // array
-          exp aap = exp();
+        if (pilaTT.top().get_nom(tipoTmp) == "array") { // array
+          arrayExp aap;
           aap.tipo = pilaTT.top().get_base(tipoTmp);
           aap.dir = sem.nuevaTemporal();
           aap.dir = pilaTT.top().get_tam(aap.tipo);
           // genCod(cuadrupla("dirTmp", "","",id));
-          AAP();
+          aap = AAP(aap);
           aa.dir = aap.dir;
           aa.tipo = aap.tipo;
         }
@@ -528,7 +542,7 @@ exp AA(exp aaParam) {
         }
       }
       else {
-        error("El índice del arreglo debe ser un entero")
+        error("El índice del arreglo debe ser un entero");
       }
     }
     else {
@@ -542,22 +556,22 @@ exp AA(exp aaParam) {
   return aa;
 }
 
-exp AAP(exp aapParam) {
-  exp aap = exp();
+arrayExp AAP(arrayExp aapParam) {
+  arrayExp aap;
   if (equals(tokenActual,CIZQ)) {
     eat(CIZQ);
-    exp q = Q();
+    boolExp q;
+    q = Q(q);
     eat(CDER);
     if (q.tipo == 0) { // INT
-      if (pilaTT.top().get_nom(aapParam.tipo) == 5) { // array
+      if (pilaTT.top().get_nom(aapParam.tipo) == "array") { // array
         arrayExp aap1 = arrayExp();
         aap1.tipo = pilaTT.top().get_base(aapParam.tipo);
-        int dirTmp = sem.nuevaTemporal();
+        string dirTmp = sem.nuevaTemporal();
         aap1.dir = sem.nuevaTemporal();
         aap1.tam = pilaTT.top().get_tam(aapParam.tipo);
-        // genCod(cuadrupla("dirTmp", "","",id));
-        // genCod(cuadrupla("dirTmp", "","",id));
-        AAP();
+        // genCod(cuadrupla(dirTmp, "","",id));
+        aap = AAP(aap);
         aap.dir = aap1.dir;
         aap.tipo = aap1.tipo;
       }
@@ -566,7 +580,7 @@ exp AAP(exp aapParam) {
       }
     }
     else {
-      error("El índice del arreglo debe ser un entero")
+      error("El índice del arreglo debe ser un entero");
     }
   }
   else {
