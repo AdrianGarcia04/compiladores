@@ -148,7 +148,7 @@ boolExp S(boolExp s);
 /**
  * Función para prueba y empate del No-terminal SP (S prima)
  */
-exp SP(boolExp sp);
+boolExp SP(boolExp sp);
 
 /**
  * Función para prueba y empate del No-terminal T
@@ -158,12 +158,12 @@ boolExp T(boolExp t);
 /**
  * Función para prueba y empate del No-terminal TP (T prima)
  */
-exp TP(boolExp tp);
+boolExp TP(boolExp tp);
 
 /**
  * Función para prueba y empate del No-terminal U
  */
-exp U();
+boolExpH U();
 
 /**
  * Función para prueba y empate del No-terminal UP (U prima)
@@ -205,7 +205,7 @@ argExp Z();
 /**
  * Función para prueba y empate del No-terminal ZP (Z prima)
  */
-exp ZP();
+argExp ZP();
 
 /**
  * Función para prueba y empate del No-terminal AA
@@ -233,3 +233,7 @@ void parse();
  * Función para reporte de errores sintácticos y semánticos.
  */
 void error(string msg);
+
+bool equivalentesListas(list<int> l1, list<int> l2);
+
+tablasimbolos fondo(stack<tablasimbolos> pila);

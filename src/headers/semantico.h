@@ -38,6 +38,7 @@ struct semantico{
             codigo.genCod(cuadrupla("=", "(float)" + dir, "", temp));
             return temp;
         }
+        return dir;
     }
 
     string reducir(string dir, int mayor, int menor) {
@@ -48,6 +49,7 @@ struct semantico{
             codigo.genCod(cuadrupla("=", "(int)" + dir, "", temp));
             return temp;
         }
+        return dir;
     }
 
     string nuevaTemporal() {
