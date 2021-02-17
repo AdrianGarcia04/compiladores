@@ -36,88 +36,88 @@ void parse() {
     //imprimir TS y TT
 }
 
-void A() {
-  pilaSimbolos->insertar_tabla();
-  pilaTipos->insertar_tabla();
-  dir = 0;
-  B();
-  G();
-  if(equals(tokenActual, FIN)) {
-    puts("Fin de análisis sintáctico.");
-    return;
-  } else {
-    puts("Error al final del análisis sintáctico");
-  }
-}
-
-void B(){
-  if (equals(tokenActual, INT)
-    || equals(tokenActual, FLOAT)
-    || equals(tokenActual, CHAR)
-    || equals(tokenActual, DOUBLE)
-    || equals(tokenActual, VOID)) {
-      exp* c = C();
-      exp* f = crea_exp();
-      f->tipo = c->tipo;
-      F(f);
-      eat(COMA);
-      B();
-  }
-}
-
-exp C(){
-  exp c = exp();
-  exp d = D();
-  exp e = exp();
-  e.base = d.tipo;
-  E(e);
-  c.tipo = e.tipo;
-  return c;
-}
-
-exp D() {
-    exp d = exp();
-  if (equals(tokenActual, INT)) {
-    eat(INT);
-    d->tipo = 0;
-  }
-  else if (equals(tokenActual, FLOAT))
-  {
-    eat(FLOAT);
-    d->tipo = 1;
-  }
-  else if (equals(tokenActual, CHAR))
-  {
-    eat(CHAR);
-    d->tipo = 2;
-  }
-  else if (equals(tokenActual, DOUBLE))
-  {
-    eat(DOUBLE);
-    d->tipo = 3;
-  }
-  else if (equals(tokenActual, VOID))
-  {
-    eat(VOID);
-    d->tipo = 4;
-  }
-  return d;
-}
-
-exp E(exp ep) {
-    exp e = exp();
-   if (equals(tokenActual, CIZQ)) {
-     string valor;
-     eat(CIZQ);
-     valor = tokenActual->valor;
-     eat(NUM);
-     eat(CDER);
-     E();
-   } else{
-       e.tipo = ep.base;
-   }
-
-}
+// void A() {
+//   pilaSimbolos->insertar_tabla();
+//   pilaTipos->insertar_tabla();
+//   dir = 0;
+//   B();
+//   G();
+//   if(equals(tokenActual, FIN)) {
+//     puts("Fin de análisis sintáctico.");
+//     return;
+//   } else {
+//     puts("Error al final del análisis sintáctico");
+//   }
+// }
+//
+// void B(){
+//   if (equals(tokenActual, INT)
+//     || equals(tokenActual, FLOAT)
+//     || equals(tokenActual, CHAR)
+//     || equals(tokenActual, DOUBLE)
+//     || equals(tokenActual, VOID)) {
+//       exp* c = C();
+//       exp* f = crea_exp();
+//       f->tipo = c->tipo;
+//       F(f);
+//       eat(COMA);
+//       B();
+//   }
+// }
+//
+// exp C(){
+//   exp c = exp();
+//   exp d = D();
+//   exp e = exp();
+//   e.base = d.tipo;
+//   E(e);
+//   c.tipo = e.tipo;
+//   return c;
+// }
+//
+// exp D() {
+//     exp d = exp();
+//   if (equals(tokenActual, INT)) {
+//     eat(INT);
+//     d->tipo = 0;
+//   }
+//   else if (equals(tokenActual, FLOAT))
+//   {
+//     eat(FLOAT);
+//     d->tipo = 1;
+//   }
+//   else if (equals(tokenActual, CHAR))
+//   {
+//     eat(CHAR);
+//     d->tipo = 2;
+//   }
+//   else if (equals(tokenActual, DOUBLE))
+//   {
+//     eat(DOUBLE);
+//     d->tipo = 3;
+//   }
+//   else if (equals(tokenActual, VOID))
+//   {
+//     eat(VOID);
+//     d->tipo = 4;
+//   }
+//   return d;
+// }
+//
+// exp E(exp ep) {
+//     exp e = exp();
+//    if (equals(tokenActual, CIZQ)) {
+//      string valor;
+//      eat(CIZQ);
+//      valor = tokenActual->valor;
+//      eat(NUM);
+//      eat(CDER);
+//      E();
+//    } else{
+//        e.tipo = ep.base;
+//    }
+//
+// }
 
 void eat(int clase) {
     if (equals(tokenActual, clase))

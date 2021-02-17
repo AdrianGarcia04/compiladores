@@ -1,88 +1,79 @@
 #pragma once
+#include <string>
+#include <list>
 using namespace std;
 
 
-struct exp :: exp {
+struct exp {
     int tipo;
     string dir;
     string base;
 
     exp(){}
 
-    exp(string d) : dir(d){}
-    exp(string b) : base(b){}
-    exp(int tp) : tipo(tp){}
-    exp(string d, int tp) : dir(d), tipo(tp){}
-    exp(string d, string b, int tp) : dir(d), base(b), tipo(tp){}
+    exp(int tipo, string dir, string base) : tipo(tipo), dir(dir), base(base){}
 };
 
-struct boolExp : exp
-{
+struct boolExp {
     // Etiquetas
     string vddr;
     string fls;
     list<string> listaIndices;
 
     boolExp(){}
-    boolExp(string d, string v, string f, int tp){
-        super::exp(d);
-        this.vddr = v;
-        this.fls = f;
-        this.tipo = tp;
-    }
+    boolExp(string vddr, string fls, list<string> listaIndices) : vddr(vddr), fls(fls), listaIndices(listaIndices){}
 };
 
-struct boolExpH : boolExp{
+struct boolExpH{
     string dirH;
     int tipoH;
 
-    //TODO: Constructor
+    boolExpH(){}
+    boolExpH(string dirH, int tipoH) : dirH(dirH), tipoH(tipoH){}
 };
 
-struct blockExp : exp{
+struct blockExp{
     string sig; // Etiqueta de siguiente
     string sigH; //Para heredados
+
     blockExp(){}
-
-    blockExp(string s): sig(s){}
-
-    blockExpH(string s): sigH(s){}
+    blockExp(string sig, string sigH) : sig(sig), sigH(sigH){}
 };
 
 
-struct argExp : exp {
+struct argExp{
     list<int> lista; //<Lista de tipos>
 
     argExp(){}
+    argExp(list<int> lista) : lista(lista){}
 };
 
-struct switchExp : blockExp{
+struct switchExp{
     string prueba;
+
+    switchExp(){}
+    switchExp(string prueba) : prueba(prueba){}
 };
 
-struct caseExp : switchExp{
+struct caseExp{
     int id;
     string inicio;
 
     caseExp(){}
-
-    caseExp(int i, string s) : id(i) , inicio(s){}
+    caseExp(int id, string inicio) : id(id) , inicio(inicio){}
 };
 
-struct defaultExp : switchExp{
+struct defaultExp{
     string inicio;
 
     defaultExp() {}
-
-    defaultExp(string s): inicio(s) {}
+    defaultExp(string inicio): inicio(inicio) {}
 };
 
 
-struct arrayExp : exp{
+struct arrayExp{
     int tam;
 
     arrayExp() {}
-
-    arrayExp(int i){}//TODO: params
+    arrayExp(int tam): tam(tam) {}
 };
-
