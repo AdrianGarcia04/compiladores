@@ -133,12 +133,12 @@ boolExpH QP(boolExpH q);
 /**
  * Función para prueba y empate del No-terminal R
  */
-exp R();
+boolExp R(boolExp r);
 
 /**
  * Función para prueba y empate del No-terminal RP (R prima)
  */
-exp RP();
+boolExpH RP(boolExpH rp);
 
 /**
  * Función para prueba y empate del No-terminal S

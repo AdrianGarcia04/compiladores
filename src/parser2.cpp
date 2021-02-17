@@ -549,6 +549,58 @@ boolExpH QP(boolExpH q){
     }else{
         int ultimaEtq = sem.codigo.reemplazarIndices(qp.listaIndices, stoi(qp.fls.substr(1)));
         sem.actualizaEtqt(ultimaEtq);
+        qp.tipo = 0; //int
+    }
+    return qp;
+}
+
+boolExp R(boolExp r){
+    boolExp r1;
+    r1.vddr = r.vddr;
+    r1.fls = r.fls;
+    boolExp s;
+    s.vddr = sem.nuevoIndice();
+    s.fls = r.fls;
+    s = S(s);
+    sem.genCod(cuadrupla("label","","",s.vddr));
+    boolExpH rp;
+    rp.tipoH = s.tipo;
+    rp.vddr = r1.vddr;
+    rp.fls = r1.fls;
+    rp.listaIndices.push_back(s.vddr);
+    rp = RP(rp);
+    r1.tipo = rp.tipo;
+    return r1;
+}
+
+boolExpH RP(boolExpH rparam){
+    boolExpH rp;
+    rp.vddr = rparam.vddr;
+    rp.fls = rparam.fls;
+    rp.tipoH = rparam.tipoH;
+    rp.listaIndices = rparam.listaIndices;
+    if (equals(tokenActual, AND)) {
+        boolExp s;
+        s.vddr = sem.nuevoIndice();
+        s.fls = rp.fls;
+        s = S(s);
+        if (sem.equivalentes(rp.tipoH,s.tipo)){
+            sem.genCod(cuadrupla("label","","",s.vddr));
+            boolExpH rp1;
+            rp1.tipoH = s.tipo;
+            rp1.vddr = rp.vddr;
+            rp1.fls = rp.fls;
+            rp1.listaIndices = rp.listaIndices;
+            rp1.listaIndices.push_back(s.vddr);
+            rp1 = RP(rp1);
+            rp.tipo = rp1.tipo;
+        }else{
+            error("Tipos no compatibles");
+        }
+    }else{
+        int ultima = sem.codigo.reemplazarIndices(rp.listaIndices,stoi(rp.vddr.substr(1)));
+        sem.actualizaEtqt(ultima);
+        rp.tipo = 0; //Int
     }
 
 }
@@ -572,13 +624,12 @@ void UP(exp upparam) {
     exp v = V();
     exp up1 = UP();
     if (sem.equivalentes(upparam.tipo, v.tipo)) {
-      up.tipo = up1.tipo;
-      up.dir = up1.dir;
       up1.tipo = sem.maximo(upparam.tipo, v.tipo);
-      up1.tipo = nuevaTemporal();
+      up1.dir = sem.nuevaTemporal();
+      up.dir = up1.dir;
       string d1 = sem.ampliar(upparam.dir, upparam.tipo, up1.tipo);
       string d2 = sem.ampliar(v.dir, v.tipo, up1.tipo);
-      genCod(cuadrupla(upparam.dir, "=", d1, "+" + d2));
+      sem.genCod(cuadrupla(upparam.dir, "=", d1, "+" + d2));
     }
     else {
       error("Tipos incompatibles");
@@ -749,7 +800,7 @@ exp XP(exp xpparam) {
     aa = AA(aa);
     xp.dir = sem.nuevaTemporal();
     xp.tipo = aa.tipo;
-    genCod(cuadrupla(xp.dir + "=", xp.base + "[", aa.dir, "]"));
+    sem.genCod(cuadrupla(xp.dir + "=", xp.base + "[", aa.dir, "]"));
   }
   else if (equals(tokenActual, PIZQ)) {
     eat(PIZQ);
@@ -839,7 +890,7 @@ exp AA(exp aaParam) {
           aap.tipo = pilaTT.top().get_base(tipoTmp);
           aap.dir = sem.nuevaTemporal();
           aap.dir = pilaTT.top().get_tam(aap.tipo);
-          genCod(cuadrupla(to_string(aaParam.dir) + "=", to_string(q.dir), "*", to_string(aaParam.tam)));
+          sem.genCod(cuadrupla(aaParam.dir + "=", q.dir, "*", aaParam.tam)));
           aap = AAP(aap);
           aa.dir = aap.dir;
           aa.tipo = aap.tipo;
@@ -876,8 +927,8 @@ exp AAP(exp aapParam) {
         string dirTmp = sem.nuevaTemporal();
         aap1.dir = sem.nuevaTemporal();
         aap1.tam = pilaTT.top().get_tam(aapParam.tipo);
-        genCod(cuadrupla("dirTmp =", to_string(q.dir), "*", to_string(aap1.tam)));
-        genCod(cuadrupla(to_string(aap1.dir), "=", "", to_string(aapParam + dirTmp)));
+        sem.genCod(cuadrupla("dirTmp =", q.dir, "*", to_string(aap1.tam))); //TODO
+        sem.genCod(cuadrupla(aap1.dir, "=", "", to_string(aapParam + dirTmp))); //TODO
         aap1 = AAP(aap1);
         aap.dir = aap1.dir;
         aap.tipo = aap1.tipo;
