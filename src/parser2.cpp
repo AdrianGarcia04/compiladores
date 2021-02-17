@@ -553,6 +553,61 @@ boolExpH QP(boolExpH q){
 
 }
 
+void U() {
+  exp u = exp();
+  exp v = V();
+  exp up = exp();
+  up.tipo = v.tipo;
+  up.dir = v.dir;
+  up = UP(up);
+  u.tipo = up.tipo;
+  u.dir = up.dir;
+  return u;
+}
+
+void UP(exp upparam) {
+  exp up = exp();
+  if (equals(tokenActual, PLUS)) {
+    eat(PLUS);
+    exp v = V();
+    exp up1 = UP();
+    if (sem.equivalentes(upparam.tipo, v.tipo)) {
+      up.tipo = up1.tipo;
+      up.dir = up1.dir;
+      up1.tipo = sem.maximo(upparam.tipo, v.tipo);
+      up1.tipo = nuevaTemporal();
+      string d1 = sem.ampliar(upparam.dir, upparam.tipo, up1.tipo);
+      string d2 = sem.ampliar(v.dir, v.tipo, up1.tipo);
+      genCod(cuadrupla(upparam.dir, "=", d1, "+" + d2));
+    }
+    else {
+      error("Tipos incompatibles");
+    }
+  }
+  else if (equals(tokenActual, MINUS)) {
+    eat(MINUS);
+    exp v = V();
+    exp up1 = UP();
+    if (sem.equivalentes(upparam.tipo, v.tipo)) {
+      up.tipo = up1.tipo;
+      up.dir = up1.dir;
+      up1.tipo = sem.maximo(upparam.tipo, v.tipo);
+      up1.tipo = nuevaTemporal();
+      string d1 = sem.ampliar(upparam.dir, upparam.tipo, up1.tipo);
+      string d2 = sem.ampliar(v.dir, v.tipo, up1.tipo);
+      genCod(cuadrupla(upparam.dir, "=", d1, "-" + d2));
+    }
+    else {
+      error("Tipos incompatibles");
+    }
+  }
+  else {
+    up.tipo = upparam.tipo;
+    up.dir = upparam.dir;
+  }
+  return up;
+}
+
 exp V() {
   exp v = exp();
   exp w = W();
