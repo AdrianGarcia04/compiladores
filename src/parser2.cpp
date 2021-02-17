@@ -235,6 +235,17 @@ argExp IP(exp ci) {
     }
 }
 
+blockExp J(blockExp jh){
+    blockExp j = blockExp();
+    eat(LKEY);
+    j.sig = jh.sig;
+    B();
+    exp k = K(j);
+    eat(RKEY);
+    genCod(cuadrupla("label","","",j.sig));
+    return j;
+}
+
 
 
 
