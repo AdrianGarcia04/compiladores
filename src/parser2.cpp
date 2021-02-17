@@ -168,7 +168,7 @@ void G() {
                 pilaTS.top().agregar(simbolo(id,-1,c.tipo,'func',h.lista));
                 genCod(cuadrupla("label", "","",id));
                 blockExp j = blockExp();
-                j.sig = nuevaEtq();
+                j.sig = nuevaEtiqueta();
                 j = J(j);
                 G();
                 genCod(cuadrupla("label","","",j.sig));
@@ -245,13 +245,68 @@ blockExp J(blockExp jh){
     eat(LKEY);
     j.sig = jh.sig;
     B();
-    exp k = K(j);
+    blockExp k = K(j);
     eat(RKEY);
     genCod(cuadrupla("label","","",j.sig));
     return j;
 }
 
+blockExp K(blockExp j){
+    blockExp k = blockExp();
+    k.sig = j.sig;
+    blockExp l = L();
+    blockExp kp = blockExp();
+    kp.sigH = k.sig;
+    kp = KP(kp);
+    l.sig = kp.sig;
+    return k;
+}
 
+blockExp KP(blockExp k){
+    blockExp kp;
+    if (equals(tokenActual,ID) ||
+        equals(tokenActual,IF) ||
+        equals(tokenActual,WHILE) ||
+        equals(tokenActual,DO) ||
+        equals(tokenActual,BREAK) ||
+        equals(tokenActual,LKEY) ||
+        equals(tokenActual,RETURN) ||
+        equals(tokenActual,SWITCH) ||
+        equals(tokenActual,PRINT) ||
+        equals(tokenActual,SCAN)) {
+        blockExp l = L();
+        kp.sigH = k.sigH;
+        kp = KP(kp);
+        l.sig = kp.sig;
+    }else{
+        kp.sig = kp.sigH;
+    }
+    return kp;
+}
+
+blockExp L(){
+    switch (tokenActual->clase) {
+        case ID:
+            exp p = P();
+            eat(ASIG);
+            boolExp q = Q();
+            eat(PCOMA);
+            if (equivalentes(p.tipo,q.tipo)){
+                string d1 = reducir(q.dir,q.tipo,p.tipo);
+                genCod(cuadrupla("label","","",d1));
+            }else{
+                error("Tipos incompatibles");
+            }
+            break;
+        case IF:
+            eat(IF);
+            eat(PIZQ);
+            boolExp q;
+            q.vddr = nuevaEtiqueta();
+            q.fls = nuevoIndice();
+
+    }
+}
 
 
 

@@ -52,4 +52,16 @@ struct semantico{
             return true;
         return false;
     }
+
+    string nuevaEtiqueta() {
+        static int numEtq = 0;
+        string etq = "l" + numEtq++;
+        return etq;
+    }
+
+    string nuevoIndice(){
+        static int numIndice = 0;
+        string ind = "i" + numIndice++;
+        return ind;
+    }
 };
