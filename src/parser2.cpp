@@ -1,15 +1,4 @@
-#include "semantico.h"
 #include "parser2.h"
-#include "tablasimbolos.h"
-#include "tablatipos.h"
-#include "tablacadenas.h"
-#include "expresion.h"
-#include "codigoint.h"
-#include <stdio.h>
-#include <iostream>
-#include <stdlib.h>
-#include <stack>
-#include <string>
 
 extern token *yylex();
 extern int yylineno;
@@ -24,34 +13,24 @@ stack<int> pilaDir;
 //Lista de Retorno
 
 void parse() {
-    /*
-    0 - int
-    1 - float
-    2 - char
-    3 - double
-    4 - void
-    */
-
-    pilaTS.push(tablasimbolos());
-    tablatipos tablaTipos = tablatipos();
-
-    tablaTipos.agregar(tipo_s(0, "int",    4, -1, -1));
-    tablaTipos.agregar(tipo_s(1, "float",  4, -1, -1));
-    tablaTipos.agregar(tipo_s(2, "char",   4, -1, -1));
-    tablaTipos.agregar(tipo_s(3, "double", 4, -1, -1));
-    tablaTipos.agregar(tipo_s(4, "void",   4, -1, -1));
-    pilaTT.push(tablaTipos);
-
-    // A();
+    A();
     //imprimir TS y TT
 }
 
 void A() {
-   pilaTS.push(tablasimbolos()); //Espero este sea el constructor
-   pilaTT.push(tablatipos());
+   pilaTS.push(tablasimbolos());
+
+   tablatipos tablaTipos = tablatipos();
+   tablaTipos.agregar(tipo_s(0, "int",    4, -1, -1));
+   tablaTipos.agregar(tipo_s(1, "float",  4, -1, -1));
+   tablaTipos.agregar(tipo_s(2, "char",   4, -1, -1));
+   tablaTipos.agregar(tipo_s(3, "double", 4, -1, -1));
+   tablaTipos.agregar(tipo_s(4, "void",   4, -1, -1));
+   pilaTT.push(tablaTipos);
+
    dir = 0;
-   B();
-   G();
+   // B();
+   // G();
    if(equals(tokenActual, FIN)) {
      puts("Fin de análisis sintáctico.");
      return;
@@ -60,7 +39,7 @@ void A() {
    }
  }
 
-void B(){
+void B() {
    if (equals(tokenActual, INT)
      || equals(tokenActual, FLOAT)
      || equals(tokenActual, CHAR)
@@ -75,7 +54,7 @@ void B(){
    }
  }
 
- exp C(){
+ exp C() {
    exp c = exp();
    exp d = D();
    exp e = exp();
@@ -86,7 +65,7 @@ void B(){
  }
 
  exp D() {
-     exp d = exp();
+   exp d = exp();
    if (equals(tokenActual, INT)) {
      eat(INT);
      d.tipo = 0;
@@ -137,7 +116,7 @@ exp F(exp ft) {
     exp f = exp();
     f.tipo = ft.tipo;
     exp fp = FP(f);
-    if (!pilaTS.top().buscar(id)){
+    if (!pilaTS.top().buscar(id)) {
         pilaTS.top().agregar(simbolo(id,dir,f.tipo,"var", nullptr));
         dir += pilaTT.top().get_tam(f.tipo);
     }else{
@@ -147,14 +126,14 @@ exp F(exp ft) {
 
 }
 
-exp FP(exp fpt){
-    if (equals(tokenActual,COMA)){
+exp FP(exp fpt) {
+    if (equals(tokenActual,COMA)) {
         eat(COMA);
         string id = tokenActual -> valor;
         eat(ID);
         exp fp = exp();
         fp.tipo = fpt.tipo;
-        if (!pilaTS.top().buscar(id)){
+        if (!pilaTS.top().buscar(id)) {
             pilaTS.top().agregar(simbolo(id,dir,fp.tipo,"var", nullptr));
             dir += pilaTT.top().get_tam(fp.tipo);
         }else{
@@ -164,8 +143,8 @@ exp FP(exp fpt){
     }
 }
 
-void G(){
-    if (equals(tokenActual,FUNC)){
+void G() {
+    if (equals(tokenActual,FUNC)) {
         eat(FUNC);
         exp c = C();
         string id = tokenActual->valor;
@@ -178,9 +157,9 @@ void G(){
         pilaTT.push(tablatipos());
         pilaDir.push(dir);
         dir = 0;
-        if (!pilaTS.top().buscar(id)){
+        if (!pilaTS.top().buscar(id)) {
             /*equivalentes(listaRetorno.tipo,c.tipo)*/
-            if (true){
+            if (true) {
                 pilaTS.top().agregar(simbolo(id,-1,c.tipo,'func',h.lista));
                 genCod(cuadrupla("label", "","",id));
                 blockExp j = blockExp();
@@ -202,7 +181,7 @@ void G(){
 
 }
 
-argExp H(){
+argExp H() {
     argExp h = argExp();
     if (equals(tokenActual, INT)
         || equals(tokenActual, FLOAT)
@@ -223,7 +202,7 @@ exp I() {
     string id = tokenActual->valor;
     eat(ID);
     argExp ip = IP(c);
-    if (!pilaTS.top().buscar(id)){
+    if (!pilaTS.top().buscar(id)) {
         pilaTS.top().agregar(simbolo(id,dir,c.tipo,"param", nullptr));
         dir += pilaTT.top().get_tam(c.tipo);
     }else{
@@ -234,7 +213,7 @@ exp I() {
     return i;
 }
 
-argExp IP(exp ci){
+argExp IP(exp ci) {
     argExp ip = argExp();
     if (equals(tokenActual, COMA)) {
         eat(COMA);
@@ -242,7 +221,7 @@ argExp IP(exp ci){
         string id = tokenActual->valor;
         eat(ID);
         argExp ip1 = IP(c);
-        if (!pilaTS.top().buscar(id)){
+        if (!pilaTS.top().buscar(id)) {
             pilaTS.top().agregar(simbolo(id,dir,c.tipo,"param", nullptr));
             dir += pilaTT.top().get_tam(c.tipo);
         }else{

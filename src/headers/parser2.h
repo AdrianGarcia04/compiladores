@@ -1,7 +1,17 @@
 #pragma once
+#include <stdio.h>
+#include <iostream>
+#include <stdlib.h>
+#include <stack>
+#include <string>
 #include "tokens.h"
 #include "tablasimbolos.h"
+#include "tablasimbolos.h"
+#include "tablatipos.h"
+#include "tablacadenas.h"
+#include "codigoint.h"
 #include "expresion.h"
+#include "semantico.h"
 
 /**
  * Función para prueba y empate del No-terminal A
@@ -219,23 +229,3 @@ void parse();
  * Función para reporte de errores sintácticos y semánticos.
  */
 void error(string msg);
-
-/**
- * (opcional) Función para buscar símbolos en la tabla de símbolos
- */
-int buscar(string simbolo);
-
-/**
- * Obtener tamaño de elemento de la tabla de tipos
- */
-int getTam(int id);
-
-/**
- * Función para imprimir Tabla de tipos
- */
-// void printTT(tabla_simbolos *TT);
-
-/**
- * Función para imprimir Tabla de símbolos
- */
-// void printTS(tabla_simbolos *TS);
