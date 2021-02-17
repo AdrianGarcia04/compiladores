@@ -553,7 +553,7 @@ boolExpH QP(boolExpH q){
 
 }
 
-void X() {
+exp X() {
   exp x = exp();
   if (equals(tokenActual, PIZQ)) {
     eat(PIZQ);
@@ -563,15 +563,13 @@ void X() {
     x.tipo = q.tipo;
   }
   else if (equals(tokenActual, ID)) {
+    string id = tokenActual->valor;
     eat(ID);
-    if (equals(tokenActual, CIZQ)) {
-      AA();
-    }
-    else if (equals(tokenActual, PIZQ)) {
-      eat(PIZQ);
-      Y();
-      eat(PDER);
-    }
+    exp xp = exp();
+    xp.base = id;
+    xp = XP(xp);
+    x.dir = xp.dir;
+    x.tipo = xp.tipo;
   }
   else if (equals(tokenActual, NUM)) {
     int numval = stoi(tokenActual->valor);
@@ -584,14 +582,59 @@ void X() {
     eat(STR);
     cadenas.agregar(cadena);
     x.dir = cadenas.get_ultima_pos();
-    x.tipo = 6; // Cadena
+    x.tipo = 2; // Cadena
   }
   else if (equals(tokenActual, TRUE)) {
     eat(TRUE);
+    x.dir = 1;
+    x.tipo = 0;
   }
   else if (equals(tokenActual, FALSE)) {
     eat(FALSE);
+    x.dir = 0;
+    x.tipo = 0;
   }
+  return x;
+}
+
+exp XP(exp xpparam) {
+  exp xp = exp();
+  if (equals(tokenActual, CIZQ)) {
+    exp aa = exp();
+    aa.base = xpparam.base;
+    aa = AA(aa);
+    xp.dir = sem.nuevaTemporal();
+    xp.tipo = aa.tipo;
+    genCod(cuadrupla(xp.dir + "=", xp.base + "[", aa.dir, "]"));
+  }
+  else if (equals(tokenActual, PIZQ)) {
+    eat(PIZQ);
+    argExp y = Y();
+    eat(PDER);
+    if (pilats.fondo().buscar(xpparam.base)) {
+      if (pilaTS.fondo().get_var(xpparam.base) == "func") {
+        if (equivalentesListas(pilaTS.fondo().get_args(xpparam.base), y.lista)) {
+          xp.tipo = pilaTS.top().get_tipo(xpparam.base);
+          xp.dir = nuevaTemporal();
+          genCod(cuadrupla(xp.dir + "=", "call " + xp.base, ",", to_string(y.lista.size())));
+        }
+        else {
+          error("El número o tipo de parámetros no coincide");
+        }
+      }
+      else {
+        error("El id no es una funcion");
+      }
+    }
+    else {
+      error("El id no está declarado");
+    }
+  }
+  else {
+    xp.dir = xpparam.base;
+    xp.tipo = pilaTS.top().get_tipo(xpparam.dir);
+  }
+  return xp;
 }
 
 argExp Y() {
@@ -708,6 +751,10 @@ exp AAP(exp aapParam) {
     aap.tipo = aapParam.tipo;
   }
   return aap;
+}
+
+bool equivalentesListas(list<string> l1, list<string> l2) {
+  return l1 == l2;
 }
 
 void eat(int clase) {
