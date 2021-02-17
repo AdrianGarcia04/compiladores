@@ -111,14 +111,14 @@ blockExp N(switchExp mparam);
 /**
  * Función para prueba y empate del No-terminal O
  */
-void O();
+void O(switchExp o);
 
 /**
  * Función para prueba y empate del No-terminal P
  */
 exp P();
 
-exp PP(exp);
+exp PP(exp pp);
 
 /**
  * Función para prueba y empate del No-terminal Q
@@ -143,22 +143,22 @@ boolExpH RP(boolExpH rp);
 /**
  * Función para prueba y empate del No-terminal S
  */
-exp S();
+boolExp S(boolExp s);
 
 /**
  * Función para prueba y empate del No-terminal SP (S prima)
  */
-exp SP();
+exp SP(boolExp sp);
 
 /**
  * Función para prueba y empate del No-terminal T
  */
-exp T();
+boolExp T(boolExp t);
 
 /**
  * Función para prueba y empate del No-terminal TP (T prima)
  */
-exp TP();
+exp TP(boolExp tp);
 
 /**
  * Función para prueba y empate del No-terminal U
@@ -168,7 +168,7 @@ exp U();
 /**
  * Función para prueba y empate del No-terminal UP (U prima)
  */
-exp UP();
+exp UP(exp up);
 
 /**
  * Función para prueba y empate del No-terminal V
@@ -178,7 +178,7 @@ exp V();
 /**
  * Función para prueba y empate del No-terminal VP (V prima)
  */
-exp VP();
+exp VP(exp vp);
 
 /**
  * Función para prueba y empate del No-terminal W
@@ -190,15 +190,17 @@ exp W();
  */
 exp X();
 
+exp XP(exp xp);
+
 /**
  * Función para prueba y empate del No-terminal Y
  */
-exp Y();
+argExp Y();
 
 /**
  * Función para prueba y empate del No-terminal Z
  */
-exp Z();
+argExp Z();
 
 /**
  * Función para prueba y empate del No-terminal ZP (Z prima)

@@ -1038,8 +1038,8 @@ argExp ZP() {
   return zp;
 }
 
-exp AA(exp aaParam) {
-  exp aa = exp();
+arrayExp AA(arrayExp aaParam) {
+  arrayExp aa = exp();
   if (equals(tokenActual,CIZQ)) {
     eat(CIZQ);
     exp q = Q();
@@ -1076,7 +1076,7 @@ exp AA(exp aaParam) {
   return aa;
 }
 
-exp AAP(exp aapParam) {
+arrayExp AAP(arrayExp aapParam) {
   exp aap = exp();
   if (equals(tokenActual,CIZQ)) {
     eat(CIZQ);
