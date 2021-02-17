@@ -5,8 +5,6 @@ extern int yylineno;
 
 token *tokenActual;
 int dir;
-tabla_simbolos tablaSimbolos;
-tabla_simbolos tablaTipos;
 
 void eat(int clase) {
   if(equals(tokenActual, clase)) {

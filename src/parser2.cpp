@@ -19,6 +19,7 @@ list<int> listaRetorno;
 semantico sem;
 
 void parse() {
+   sem = semantico();
     A();
     while (!pilaTS.empty()) {
       tablasimbolos aux = pilaTS.top();
@@ -30,6 +31,7 @@ void parse() {
       cout << aux.str() << '\n';
       pilaTT.pop();
     }
+    sem.imprimir("res.ci");
 }
 
 void A() {
